@@ -6,13 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "start": "node dist/script.js",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build-backend": "tsc --project tsconfig.backend.json && node --env-file .env ./backendDist/server.js",
+    "start-backend": "node backendSrc/server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "joi": "^17.13.3",
+    "mongodb": "^6.9.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",

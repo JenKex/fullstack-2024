@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "build": "npm run build-backend && npm run build-frontend",
     "build-frontend": "tsc -b && vite build",
     "start": "node dist/script.js",
     "lint": "eslint .",

@@ -1,5 +1,5 @@
 import express, { Express, NextFunction, Request, Response } from 'express'
-import { resetDatabase } from './mongoDBSrc/resetDatabase.js'
+// import { resetDatabase } from './mongoDBSrc/resetDatabase.js'
 
 const app: Express = express()
 const port: number = Number(process.env.PORT) || 1000

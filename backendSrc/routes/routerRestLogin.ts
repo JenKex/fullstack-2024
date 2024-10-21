@@ -1,7 +1,8 @@
 import express, { Request, Response, Router } from "express"
 import { validateLogin } from "../data/validation"
 import jwt from 'jsonwebtoken'
-const { sign, verify } = jwt
+const { sign } = jwt
+// Kommenterade ut 'verify' delen av 'sign, verify' från jwt -- behövs omimporteras om den ska användas.
 
 export const router: Router = express.Router()
 

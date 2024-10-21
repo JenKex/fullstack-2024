@@ -2,7 +2,7 @@ import express, { Express, NextFunction, Request, Response } from 'express'
 import { resetDatabase } from './mongoDBSrc/resetDatabase.js'
 
 const app: Express = express()
-const port = 1000
+const port: number = Number(process.env.PORT) || 1000
 
 
 app.use( express.json() )
@@ -25,4 +25,4 @@ app.listen(port, () => {
 
 // Kommentera in för att återställa databasen:
 
-resetDatabase()
+// resetDatabase()

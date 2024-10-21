@@ -1,7 +1,7 @@
 import express from 'express';
 import { resetDatabase } from './mongoDBSrc/resetDatabase.js';
 const app = express();
-const port = 1000;
+const port = Number(process.env.PORT) || 1000;
 app.use(express.json());
 // Middleware:
 // Logger:

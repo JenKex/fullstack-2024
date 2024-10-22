@@ -20,5 +20,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "backendSrc/data/content.ts"]
+  "include": ["src", "backendSrc/data/content.ts", "backendSrc/data/validation.ts"]
 }

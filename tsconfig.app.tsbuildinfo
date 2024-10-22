@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/data/interfaces.ts","./src/data/components/channellistitem.tsx","./src/data/components/dmlistitem.tsx","./src/pages/home.tsx","./src/pages/loginpage.tsx","./backendsrc/data/content.ts","./backendsrc/data/validation.ts"],"version":"5.6.3"}

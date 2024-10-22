@@ -1,3 +1,5 @@
+import { Collection, MongoClient } from "mongodb";
+
 export interface Channel{
     name: string,
     // Renderar lista av messages in-app beroende på meddelandets associerade kanal, har det inte som en hårdkodad egenskap i kanalerna själva.
@@ -27,4 +29,9 @@ export interface User{
     username: string,
     password: string,
     userId: number
+}
+
+export interface ClientType<T extends Document> {
+    client: MongoClient;
+    collection: Collection<T>;
 }

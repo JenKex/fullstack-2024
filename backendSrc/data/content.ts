@@ -138,7 +138,7 @@ let directMessages: DirectMessage[] = [  {
 let users: User[] = [
     {
         username: "johnDoe",
-        password: "password123",
+        password: "123",
         userId: 101
       },
       {

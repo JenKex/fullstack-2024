@@ -1,6 +1,6 @@
 export interface Channel{
     name: string,
-    id: number,
+    id?: number,
     // Renderar lista av messages in-app beroende på meddelandets associerade kanal, har det inte som en hårdkodad egenskap i kanalerna själva. 
     // messages: ChannelMessage[],
     // Behöver eventuellt ingen lista på users i kanalen, eftersom alla kommer vara med ändå -- alternativet skulle vara om man gör en till egenskap på users t.ex. 'affiliatedChannels' där man sätter vilka användare som är med i vilka kanalers ID.

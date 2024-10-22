@@ -18,9 +18,36 @@ header > div{
   padding: 1em;
 }
 
+main{
+  display: flex;
+}
+
 main > div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5em;
   margin-top: 3em;
   padding: 10em;
+  max-width: 50vw;
   background-color: lightblue;
   border-radius: 1.5em;
+}
+
+main > div > *{
+  margin-top: 1em;
+  max-width: fit-content;
+}
+
+nav {
+	padding: 3em;
+	border-right: 2px dashed rgb(64, 93, 212);
+  background-color: lightblue;
+  border-bottom-left-radius: 2em;
+  border-bottom-right-radius: 2em;
+}
+nav ul {
+	list-style-type: none;
+	padding: 0;
 }

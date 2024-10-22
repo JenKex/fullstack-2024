@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express"
-import { validateLogin } from "../data/validation"
+import { validateLogin } from "../data/validation.js"
 import jwt from 'jsonwebtoken'
 const { sign } = jwt
 // Kommenterade ut 'verify' delen av 'sign, verify' från jwt -- behövs omimporteras om den ska användas.
@@ -8,7 +8,8 @@ export const router: Router = express.Router()
 
 // Skriv validateLogin-funktion -- skicka tillbaka JWT.
 
-router.post('/login', (req: Request, res: Response) => {
+router.post('/login', async (req: Request, res: Response) => {
+	console.log('Test')
 	if( !process.env.SECRET ) {
 		res.sendStatus(500)
 		return
@@ -17,7 +18,7 @@ router.post('/login', (req: Request, res: Response) => {
 	// skicka tillbaka en JWT
 	
 	console.log('Body är: ', req.body)
-	const userId = validateLogin(req.body.username, req.body.password)
+	const userId = await validateLogin(req.body.username, req.body.password)
 	console.log('user id: ', userId)
 	if( !userId ) {
 		res.sendStatus(401)  // unauthorized

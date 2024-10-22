@@ -1,25 +1,12 @@
 import express from "express";
 import { validateLogin } from "../data/validation.js";
-// import { ClientType, User } from "../data/interfaces.js"
-import { getAllUsers } from "../mongoDBSrc/UserFunctions/getAllUsers.js";
 import jwt from 'jsonwebtoken';
-// Kommenterade ut 'verify' delen av 'sign, verify' från jwt -- behövs omimporteras om den ska användas.
 const { sign } = jwt;
+// Kommenterade ut 'verify' delen av 'sign, verify' från jwt -- behövs omimporteras om den ska användas.
 export const router = express.Router();
 // Skriv validateLogin-funktion -- skicka tillbaka JWT.
-router.get('/', async (_, res) => {
-    try {
-        const users = await getAllUsers();
-        if (!users) {
-            res.sendStatus(404);
-        }
-        res.send(users);
-    }
-    catch (error) {
-        throw error;
-    }
-});
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
+    console.log('Test');
     if (!process.env.SECRET) {
         res.sendStatus(500);
         return;
@@ -27,7 +14,7 @@ router.post('/login', (req, res) => {
     // Klar: middleware för att ta emot body
     // skicka tillbaka en JWT
     console.log('Body är: ', req.body);
-    const userId = validateLogin(req.body.username, req.body.password);
+    const userId = await validateLogin(req.body.username, req.body.password);
     console.log('user id: ', userId);
     if (!userId) {
         res.sendStatus(401); // unauthorized

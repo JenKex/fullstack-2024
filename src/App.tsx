@@ -1,13 +1,9 @@
-import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from './pages/Home';
-import LoginPage from './pages/LoginPage'
-import { useState } from 'react'
+import Home from './pages/Home.js';
+import LoginPage from './pages/LoginPage.js'
 import './App.css'
 
 function App() {
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   return (
     <BrowserRouter>

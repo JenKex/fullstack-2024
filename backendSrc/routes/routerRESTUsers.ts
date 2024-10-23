@@ -20,7 +20,7 @@ router.get('/', async (_, res: Response) => {
         res.send(users)
     }
     catch (error) {
-        throw error
+        res.sendStatus(500)
     }
 })
 

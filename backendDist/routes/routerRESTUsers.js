@@ -16,7 +16,7 @@ router.get('/', async (_, res) => {
         res.send(users);
     }
     catch (error) {
-        throw error;
+        res.sendStatus(500);
     }
 });
 router.post('/login', (req, res) => {

@@ -1,9 +1,13 @@
 import React, { useState } from "react"
 // import { useNavigate } from "react-router-dom"
 
+// Funderar på att ha 'setUser' som en State-variabel efter inloggning, som kollas emot och ser vilka inloggningar man har. Men ioförsig, denna skulle behöva lagras lokalt på något sätt för att föras över till Home-sidan -- skulle kunna spara i localStorage, men det är hela syftet med JWT.
+// Kolla books-exemplet!
+
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  // const [user, setUser] = useState('')
   const LS_KEY = 'JWT-TOKEN'
 
   // function testValues() {
@@ -30,6 +34,7 @@ const LoginPage: React.FC = () => {
       const token = jwt.jwt
       localStorage.setItem(LS_KEY, token)
     }
+    // setUser(username)
   }
 
   return (

@@ -1,9 +1,9 @@
 import express from "express";
-import { getAllChannels } from "../mongoDBSrc/ChannelFunctions/getAllChannels.js";
+import { getAllChannelMessages } from "../mongoDBSrc/ChannelMessageFunctions/getAllChannelMessages.js";
 export const router = express.Router();
 router.get('/', async (_, res) => {
     try {
-        const channels = await getAllChannels();
+        const channels = await getAllChannelMessages();
         if (!channels) {
             res.sendStatus(404);
         }
@@ -13,4 +13,3 @@ router.get('/', async (_, res) => {
         res.sendStatus(500);
     }
 });
-//Har just nu inte kanalmodifikationer implementerade -- sätt in POST, PUT, DELETE på samma sätt som för chattmeddelanden i så fall.

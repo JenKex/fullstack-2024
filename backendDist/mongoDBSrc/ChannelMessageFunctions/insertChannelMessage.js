@@ -1,17 +1,17 @@
 import { connectToDatabase } from "../connection.js";
 let x;
-export async function insertDirectMessage(directMessage) {
+export async function insertChannelMessage(channelMessage) {
     try {
-        x = await connectToDatabase('directMessages');
+        x = await connectToDatabase('channelMessages');
         const timestamp = new Date();
-        directMessage = { ...directMessage,
+        channelMessage = { ...channelMessage,
             timestamp: timestamp
         };
-        const result = await x.collection.insertOne(directMessage);
+        const result = await x.collection.insertOne(channelMessage);
         return result.insertedId;
     }
     catch (error) {
-        console.log('Error inserting messages.');
+        console.log('Error posting to channel.');
         throw error;
     }
     finally {

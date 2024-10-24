@@ -12,7 +12,7 @@ export interface ChannelMessage{
     text: string,
     channel: number,
     user: string,
-    messageId: number
+    timestamp?: Date
 }
 
 export interface DirectMessage{
@@ -20,7 +20,7 @@ export interface DirectMessage{
     // För unikhets skull borde receivingUser och sendingUser här vara userId. Börjar med att bygga en bas och ändrar efterhand.
     receivingUser: string,
     sendingUser: string,
-    messageId: number
+    timestamp?: Date
 }
 
 export interface User{

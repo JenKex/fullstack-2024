@@ -1,5 +1,6 @@
 import express, { Request, Response, Router } from "express"
 import { getAllDirectMessages } from "../mongoDBSrc/DirectMessageFunctions/getAllDirectMessages.js"
+import { getOneUsersDirectMessages } from "../mongoDBSrc/DirectMessageFunctions/getOneUsersDirectMessages.js"
 import { insertDirectMessage } from "../mongoDBSrc/DirectMessageFunctions/insertDirectMessage.js"
 import { DirectMessage } from "../data/interfaces.js"
 
@@ -14,6 +15,17 @@ router.get('/', async (_, res: Response) => {
             res.sendStatus(404)
         }
         res.send(channels)
+    }
+    catch (error){
+        res.sendStatus(500)
+    }
+})
+
+router.get('/:id', async (req: Request, res: Response) => {
+    try {
+        const id: string = req.params.id
+        const result = await getOneUsersDirectMessages(id)
+        res.send(result)
     }
     catch (error){
         res.sendStatus(500)

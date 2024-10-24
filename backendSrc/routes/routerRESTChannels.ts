@@ -1,9 +1,11 @@
 import express, { Response, Router } from "express"
+import { WithId } from 'mongodb'
+import { Channel } from '../data/interfaces.js'
 import { getAllChannels } from "../mongoDBSrc/ChannelFunctions/getAllChannels.js"
 
 export const router: Router = express.Router()
 
-router.get('/', async (_, res: Response) => {
+router.get('/', async (_, res: Response<WithId<Channel>[]>) => {
     try{
         const channels = await getAllChannels()
         if (!channels){

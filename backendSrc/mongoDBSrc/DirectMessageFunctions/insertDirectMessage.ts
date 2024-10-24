@@ -8,11 +8,15 @@ let x: ClientType<DirectMessageDocument>
 export async function insertDirectMessage(directMessage: DirectMessage): Promise<ObjectId | null>{
     try{
         x = await connectToDatabase<DirectMessageDocument>('directMessages')
+        const timestamp = new Date()
+        directMessage = {...directMessage,
+            timestamp: timestamp
+        }
         const result: InsertOneResult<DirectMessage> = await x.collection.insertOne(directMessage as DirectMessageDocument)
         return result.insertedId
     }
     catch (error){
-        console.log('Error fetching messages.')
+        console.log('Error inserting messages.')
         throw error
     }
     finally{

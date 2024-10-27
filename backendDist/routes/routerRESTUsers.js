@@ -3,7 +3,7 @@ import { validateLogin } from "../data/validation.js";
 // import { ClientType, User } from "../data/interfaces.js"
 import { getAllUsers } from "../mongoDBSrc/UserFunctions/getAllUsers.js";
 import jwt from 'jsonwebtoken';
-// Kommenterade ut 'verify' delen av 'sign, verify' från jwt -- behövs omimporteras om den ska användas.
+// Kommenterade ut 'verify' delen av 'sign, verify' från jwt -- behövs omimporteras om den ska användas för t.ex. get/protected, som jag nu har under get/:id.
 const { sign } = jwt;
 export const router = express.Router();
 // Skriv validateLogin-funktion -- skicka tillbaka JWT.

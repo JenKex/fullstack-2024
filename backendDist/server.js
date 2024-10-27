@@ -16,11 +16,10 @@ app.use('/', (req, res, next) => {
     next();
 });
 app.use('/', express.static('./dist'));
-// Var tidigare '/api/channels' och '/api/users' -- tog bort detta, tänkte att routerna definieras explicit och det inte påverkade i tester, men lägg tillbaka ifall det strular. 
-app.use('/channels', ChannelRouter);
-app.use('/users', UserRouter);
-app.use('/channel-messages', ChannelMessageRouter);
-app.use('/direct-messages', DirectMessageRouter);
+app.use('api/channels', ChannelRouter);
+app.use('api/channel-messages', ChannelMessageRouter);
+app.use('api/direct-messages', DirectMessageRouter);
+app.use('api/users', UserRouter);
 // Routes för channels, channelmessages, etc.:
 app.listen(port, () => {
     console.log('Server is listening on port ' + port);

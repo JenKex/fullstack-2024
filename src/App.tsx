@@ -1,10 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './pages/Home.js';
 import LoginPage from './pages/LoginPage.js'
-import './App.css'
 import { Chatroom } from "./pages/Chatroom.js";
+import { Channel } from './pages/Channel.js'
+import './App.css'
 
 function App() {
+  // hämta username från zustand store
+  // om ej username: skicka request till backend
 
   return (
     <BrowserRouter>
@@ -12,6 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="login" element={<LoginPage/>}/>
         <Route path="chatroom/*" element={<Chatroom/>}/>
+        <Route path="channel/*" element={<Channel/>}/>
     </Routes>
   </BrowserRouter>
   )

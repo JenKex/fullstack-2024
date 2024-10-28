@@ -24,7 +24,7 @@ const LoginPage: React.FC = () => {
     // }
     const data = { username, password }
     console.log('Skickar inloggningsuppgifter till servern: ', data)
-    const response = await fetch('/api/login', {
+    const response = await fetch('/api/users/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -37,11 +37,12 @@ const LoginPage: React.FC = () => {
       localStorage.setItem(LS_KEY, token)
       localStorage.setItem('username', username)
     }
+    navigate('/')
   }
 
-  function loginUserTest(username: string){
-    localStorage.setItem('username', username)
-  }
+  // function loginUserTest(username: string){
+  //   localStorage.setItem('username', username)
+  // }
 
   return (
     <div className="display">
@@ -51,11 +52,11 @@ const LoginPage: React.FC = () => {
         <button onClick={() => navigate('/')}>Home</button>
       </header>
       <main>
-        <div>Display login window here.
+        <div>Type your username and password below.
           <input type="text" id="username-input" value={username} onChange={(e) => setUsername(e.target.value)}></input>
           <input type="password" id="password-input" value={password} onChange={(e) => setPassword(e.target.value)}></input>
-          {/* <button onClick={() => loginUser(username, password)}></button> */}
-          <button onClick={() => loginUserTest(username)}></button>
+          <button onClick={() => loginUser(username, password)}>Log in</button>
+          {/* <button onClick={() => loginUserTest(username)}></button> */}
         </div>
       </main>
     </div>

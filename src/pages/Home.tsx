@@ -7,9 +7,12 @@ import { ChannelListItem } from "../data/components/ChannelListItem.js"
 
 const Home: React.FC = () => {
 
-  // const LS_KEY = 'JWT_TOKEN'
-  let chatrooms: string[] = []
+  const LS_KEY = 'JWT_TOKEN'
+  // let chatrooms: string[] = []
   let [chatroomState, setChatroomState] = useState<string[]>([])
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+  const [currentUser, setCurrentUser] =  useState<string>('')
+
 
   // Tanke bakom den här funktionen:
   // 1: En tom lista skapas.
@@ -22,62 +25,36 @@ const Home: React.FC = () => {
   // PROBLEM: Server-hämtning funkar inte -- kör ifrån hårdkodad data för att testa funktionen.
 
   useEffect(() => {
-    //   async function renderChatrooms(): Promise<string[]>{
-    //     let chatrooms: string[] = []
-    //     let x: number = 0
-    //     if (localStorage.getItem(LS_KEY)){
-    //     const loggedInUser = localStorage.getItem('username')
-    //     const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`)
-    //     if (response){
-    //       const data = await response.json()
-    //       for (let i = 0; i < data.length; i++){
-    //         if (loggedInUser === data[i].sendingUser){
-    //           if (chatrooms.includes(data[i].receivingUser)){
-
-    //           }
-    //           else{
-    //             chatrooms[x] = data[i].receivingUser
-    //             x++
-    //           }
-    //         }
-    //         else if (loggedInUser === data[i].receivingUser){
-    //           if (chatrooms.includes(data[i].sendingUser)){
-    // 
-    // }
-    //           chatrooms[x] = data[i].sendingUser
-    //           x++
-    //         }
-    //       }
-    //     }
-    //   }
-    //   return chatrooms
-    // }
-
-
-    // renderChatrooms()
-
-    function renderChatroomsTest() {
+    async function renderChatrooms(): Promise<void> {
+      let chatrooms: string[] = []
       let x: number = 0
-      if (localStorage.getItem('username')) {
-        const loggedInUser = localStorage.getItem('username')
-          for (let i = 0; i < directMessages.length; i++) {
-            console.log(chatrooms)
-            if (loggedInUser === directMessages[i].sendingUser) {
-              if (chatrooms.includes(directMessages[i].receivingUser)) {
+      if (localStorage.getItem(LS_KEY)) {
+        setIsLoggedIn(true)
+        const loggedInUser = localStorage.getItem('username') || ''
+        setCurrentUser(loggedInUser)
+        console.log(loggedInUser)
+        const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`)
+        if (response) {
+          const data = await response.json()
+          console.log('Home.tsx, renderChatrooms, useEffect', data)
+          for (let i = 0; i < data.length; i++) {
+            if (loggedInUser === data[i].sendingUser) {
+              if (chatrooms.includes(data[i].receivingUser)) {
 
               }
               else {
-                chatrooms[x] = directMessages[i].receivingUser
+                chatrooms[x] = data[i].receivingUser
                 x++
               }
             }
-            else if (loggedInUser === directMessages[i].receivingUser) {
-              if (chatrooms.includes(directMessages[i].sendingUser)) {
+            else if (loggedInUser === data[i].receivingUser) {
+              if (chatrooms.includes(data[i].sendingUser)) {
 
               }
               else {
-              chatrooms[x] = directMessages[i].sendingUser
-              x++
+                chatrooms[x] = data[i].sendingUser
+                x++
+              }
             }
           }
         }
@@ -85,61 +62,81 @@ const Home: React.FC = () => {
       setChatroomState(chatrooms)
     }
 
-    renderChatroomsTest()
-  }, [])
 
-  // isLoggedIn är en placeholder -- borde senare kolla mot JWT-token värde i LocalStorage.
-  const [isLoggedIn] = useState(false)
+    renderChatrooms()
+
+    // function renderChatroomsTest() {
+    //   let x: number = 0
+    //   if (localStorage.getItem('username')) {
+    //     setIsLoggedIn(true)
+    //     const loggedInUser = localStorage.getItem('username')
+    //       for (let i = 0; i < directMessages.length; i++) {
+    //         console.log(chatrooms)
+    //         if (loggedInUser === directMessages[i].sendingUser) {
+    //           if (chatrooms.includes(directMessages[i].receivingUser)) {
+
+    //           }
+    //           else {
+    //             chatrooms[x] = directMessages[i].receivingUser
+    //             x++
+    //           }
+    //         }
+    //         else if (loggedInUser === directMessages[i].receivingUser) {
+    //           if (chatrooms.includes(directMessages[i].sendingUser)) {
+
+    //           }
+    //           else {
+    //           chatrooms[x] = directMessages[i].sendingUser
+    //           x++
+    //         }
+    //       }
+    //     }
+    //   }
+    //   setChatroomState(chatrooms)
+    // }
+
+    // renderChatroomsTest()
+  }, [])
 
   const navigate = useNavigate()
 
-  // Tror inte att jag kan göra det här i en vanlig funktion, eftersom den inte kommer uppdateras med state-baserade variabler.
-  // Måste hitta något sätt att .map-a ut och få det att nonchalera dubletter. 
-
-  // function renderMessages(){
-  //   let messageList: string[] = []
-  //   let x = 0
-  //   for (let i = 0; i < directMessages.length; i++){
-  //     if (messageList.includes(directMessages[i].sendingUser)){
-
-  //     }
-  //     else{
-  //       messageList[x] = directMessages[i].sendingUser
-  //       x++
-  //     }
-  //     return messageList
-  //   }
-  // }
-
-  // function navigateLogin(){
-  //   navigate()
-  // }
-
   async function testGetAll() {
     const response = await fetch('/api/users')
-    const data = JSON.stringify(response)
-    console.log(data)
+    console.log(await response.json())
+  }
+
+  function logOut() {
+    localStorage.removeItem(LS_KEY)
+    localStorage.removeItem('username')
+    setChatroomState([])
+    setIsLoggedIn(false)
   }
 
   return (
     <div className="display">
       <header>
-        <div>Channels</div>
-        <div>Users</div>
+        {/* <div>Channels</div>
+        <div>Users</div> */}
 
         {isLoggedIn ?
-          <button>Log out</button> :
+        <div>
+        <h2>Welcome, {currentUser}</h2>
+          <button onClick={() => logOut()}>Log out</button>
+          </div> :
+          <div>
+          <h2>Welcome, guest</h2>
           <button onClick={() => navigate('/login')}>Log in</button>
+          </div>
         }
       </header>
       <main>
         <nav>
-          <ul>
+          <ul> <b>Channels</b>
             {channels.map((channel) => (
               <ChannelListItem key={channel.name} {...channel}></ChannelListItem>
             ))}
           </ul>
-          <ul>
+          <ul> {isLoggedIn ? <b>Users</b> : <b>No DMs detected. Log in to chat!</b>}
             {chatroomState.map((username) => (
               <li onClick={() => navigate(`/chatroom/${username}`)} key={username}>{username}</li>
             ))}

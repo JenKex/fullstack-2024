@@ -13,6 +13,7 @@ export interface ChannelMessage{
     channel: number,
     user: string,
     timestamp?: Date
+    messageId: number
 }
 
 export interface DirectMessage{
@@ -21,6 +22,7 @@ export interface DirectMessage{
     receivingUser: string,
     sendingUser: string,
     timestamp?: Date
+    messageId: number
 }
 
 export interface User{

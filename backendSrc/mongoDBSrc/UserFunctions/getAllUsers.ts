@@ -8,7 +8,7 @@ let x: ClientType<UserDocument>
 export async function getAllUsers(): Promise<WithId<User>[]> {
 
         try {
-            console.log('Testning.')
+            console.log('Test: GetAllUsers.')
             x = await connectToDatabase<UserDocument>("users")
     
             const cursor: FindCursor <WithId<User>> = x.collection.find({})

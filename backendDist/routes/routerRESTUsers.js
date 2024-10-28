@@ -9,6 +9,7 @@ export const router = express.Router();
 // Skriv validateLogin-funktion -- skicka tillbaka JWT.
 router.get('/', async (_, res) => {
     try {
+        console.log('Test: Router.');
         const users = await getAllUsers();
         if (!users) {
             res.sendStatus(404);

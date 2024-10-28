@@ -28,9 +28,14 @@ router.get('/:id', async (req: Request, res: Response) => {
         res.send(result)
     }
     catch (error){
+        let m = (error as ErrorWithMessage).message
+        console.log(`${req.url}, ${m}`)
         res.sendStatus(500)
     }
 })
+interface ErrorWithMessage {
+    message: string;
+}
 
 router.post('/', async (req: Request, res: Response) => {
     // Joi-validera.

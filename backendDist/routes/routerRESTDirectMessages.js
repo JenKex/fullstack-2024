@@ -23,6 +23,8 @@ router.get('/:id', async (req, res) => {
         res.send(result);
     }
     catch (error) {
+        let m = error.message;
+        console.log(`${req.url}, ${m}`);
         res.sendStatus(500);
     }
 });

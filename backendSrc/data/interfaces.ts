@@ -15,6 +15,7 @@ export interface ChannelMessage{
     channel: string,
     user: string,
     timestamp?: Date
+    messageId: number
 }
 
 export interface DirectMessage{
@@ -23,8 +24,10 @@ export interface DirectMessage{
     receivingUser: string,
     sendingUser: string,
     // Antagligen enklare att sortera på timestamp än att sortera på messageId. Genereras automatiskt.
+    // Unikhetsproblem dock. Kör kanske med båda.
     // messageId: number
     timestamp?: Date
+    messageId: number
 }
 
 export interface User{

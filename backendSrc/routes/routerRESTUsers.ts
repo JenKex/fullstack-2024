@@ -13,6 +13,7 @@ export const router: Router = express.Router()
 
 router.get('/', async (_, res: Response) => {
     try {
+        console.log('Test: Router.')
         const users = await getAllUsers()
         if (!users) {
             res.sendStatus(404)
@@ -43,7 +44,8 @@ router.post('/login', (req: Request, res: Response) => {
     // Make JWT
     // res.send('"JWT"')
     const payload = {
-        userId
+        userId,
+        username: req.body.username
     }
     const token: string = sign(payload, process.env.SECRET)
     res.send({ jwt: token })

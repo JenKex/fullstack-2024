@@ -15,17 +15,17 @@ app.use(express.json())
 // Middleware:
 
 // Logger:
-app.use('/', (req: Request, res: Response, next: NextFunction) => {
-	console.log(`${req.method}  ${req.url}, ${res}`, req.body)
+app.use('/', (req: Request, _: Response, next: NextFunction) => {
+	console.log(`${req.method}  ${req.url}`, req.body)
 	next()
 })
 
 app.use('/', express.static('./dist'));
 
-app.use('api/channels', ChannelRouter)
-app.use('api/channel-messages', ChannelMessageRouter)
-app.use('api/direct-messages', DirectMessageRouter)
-app.use('api/users', UserRouter)
+app.use('/api/channels', ChannelRouter)
+app.use('/api/channel-messages', ChannelMessageRouter)
+app.use('/api/direct-messages', DirectMessageRouter)
+app.use('/api/users', UserRouter)
 
 // Routes för channels, channelmessages, etc.:
 

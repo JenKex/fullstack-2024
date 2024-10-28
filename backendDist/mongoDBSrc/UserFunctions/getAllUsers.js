@@ -2,7 +2,7 @@ import { connectToDatabase } from "../connection.js";
 let x;
 export async function getAllUsers() {
     try {
-        console.log('Testning.');
+        console.log('Test: GetAllUsers.');
         x = await connectToDatabase("users");
         const cursor = x.collection.find({});
         const found = await cursor.toArray();

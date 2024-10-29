@@ -3,6 +3,7 @@ import { ChannelMessage } from "../data/interfaces.js"
 import { getAllChannelMessages } from "../mongoDBSrc/ChannelMessageFunctions/getAllChannelMessages.js"
 import { getOneChannelsMessages } from "../mongoDBSrc/ChannelMessageFunctions/getOneChannelsMessages.js"
 import { insertChannelMessage } from "../mongoDBSrc/ChannelMessageFunctions/insertChannelMessage.js"
+import { isValidChannelMessage } from "../data/validation.js"
 
 export const router: Router = express.Router()
 
@@ -33,8 +34,13 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
     try{
         const channelMessage: ChannelMessage = req.body
-        await insertChannelMessage(channelMessage)
-        res.sendStatus(204)
+        if (isValidChannelMessage(channelMessage)){
+            await insertChannelMessage(channelMessage)
+            res.sendStatus(201)
+        }
+        else{
+            res.sendStatus(400)
+        }
     }
     catch (error){
         res.sendStatus(500)

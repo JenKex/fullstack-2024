@@ -37,7 +37,8 @@ router.post('/login', (req, res) => {
     // Make JWT
     // res.send('"JWT"')
     const payload = {
-        userId
+        userId,
+        username: req.body.username
     };
     const token = sign(payload, process.env.SECRET);
     res.send({ jwt: token });

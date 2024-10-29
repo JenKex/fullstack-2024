@@ -3,6 +3,7 @@ import { getAllDirectMessages } from "../mongoDBSrc/DirectMessageFunctions/getAl
 import { getOneUsersDirectMessages } from "../mongoDBSrc/DirectMessageFunctions/getOneUsersDirectMessages.js"
 import { insertDirectMessage } from "../mongoDBSrc/DirectMessageFunctions/insertDirectMessage.js"
 import { DirectMessage } from "../data/interfaces.js"
+import { isValidDirectMessage } from "../data/validation.js"
 
 export const router: Router = express.Router()
 
@@ -39,7 +40,12 @@ interface ErrorWithMessage {
 
 router.post('/', async (req: Request, res: Response) => {
     // Joi-validera.
-    const directMessage: DirectMessage = req.body 
-    await insertDirectMessage(directMessage)
-    res.sendStatus(201)
+    const directMessage: DirectMessage = req.body
+    if (isValidDirectMessage(directMessage)){
+        await insertDirectMessage(directMessage)
+        res.sendStatus(201)
+    }
+    else{
+        res.sendStatus(400)
+    }
 })

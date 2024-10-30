@@ -13,6 +13,10 @@ export async function getAllDirectMessages(): Promise<WithId<DirectMessage>[]> {
     
             const cursor: FindCursor <WithId<DirectMessage>> = x.collection.find({})
             const found: WithId<DirectMessage>[] = await cursor.toArray()
+
+            // if(x) {
+            //     await x.client.close()
+            // }
             
             if(found.length < 1) {
                 console.log( "No DMs registered.");
@@ -24,6 +28,7 @@ export async function getAllDirectMessages(): Promise<WithId<DirectMessage>[]> {
             throw error;
         }finally {
             if(x) {
+                console.log('getAllDirectMessages: client.close')
                 await x.client.close()
             }
         }

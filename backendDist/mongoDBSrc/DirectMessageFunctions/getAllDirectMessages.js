@@ -6,6 +6,9 @@ export async function getAllDirectMessages() {
         x = await connectToDatabase("directMessages");
         const cursor = x.collection.find({});
         const found = await cursor.toArray();
+        // if(x) {
+        //     await x.client.close()
+        // }
         if (found.length < 1) {
             console.log("No DMs registered.");
         }
@@ -17,6 +20,7 @@ export async function getAllDirectMessages() {
     }
     finally {
         if (x) {
+            console.log('getAllDirectMessages: client.close');
             await x.client.close();
         }
     }

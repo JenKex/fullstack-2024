@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection, Document } from "mongodb"
-
+import { initializeMongoClient } from "./connectToClient";
 
 export const con: string | undefined = process.env.CONNECTION_STRING
 
@@ -7,6 +7,12 @@ interface ClientType<T extends Document> {
     client: MongoClient;
     collection: Collection<T>;
 }
+
+// export async function connectToDatabase<T extends Document>(dataPointer: string): Promise<Collection<T>> {
+//     const client = await initializeMongoClient();
+//     const db: Db = client.db('chat_client');
+//     return db.collection<T>(dataPointer);
+// }
 
 export async function connectToDatabase<T extends Document>(dataPointer: string): Promise<ClientType<T>>{
     

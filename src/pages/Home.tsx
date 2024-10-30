@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { channels, directMessages } from "../../backendSrc/data/content.js"
+import { channels } from "../../backendSrc/data/content.js"
 import { ChannelListItem } from "../data/components/ChannelListItem.js"
 // import { DirectMessage } from "../data/interfaces.js"
 // import { DMListItem } from "../data/components/DMListItem.js"
@@ -100,10 +100,10 @@ const Home: React.FC = () => {
 
   const navigate = useNavigate()
 
-  async function testGetAll() {
-    const response = await fetch('/api/users')
-    console.log(await response.json())
-  }
+  // async function testGetAll() {
+  //   const response = await fetch('/api/users')
+  //   console.log(await response.json())
+  // }
 
   function logOut() {
     localStorage.removeItem(LS_KEY)
@@ -142,8 +142,8 @@ const Home: React.FC = () => {
             ))}
           </ul>
         </nav>
-        <div>Display chat here.
-          <button onClick={testGetAll}>GetAll-test</button>
+        <div>Welcome to NySpace! Join the conversation in one of our forum channels,
+          or just find your favorite folks and chat them up!
         </div>
       </main>
     </div>

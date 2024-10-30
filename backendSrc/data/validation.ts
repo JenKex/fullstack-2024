@@ -1,5 +1,5 @@
 import Joi from 'joi'
-import { ChannelMessage, DirectMessage, User } from '../data/interfaces.js' 
+import { ChannelMessage, DirectMessageWithoutId, User } from '../data/interfaces.js' 
 import { users } from './content.js'
 // import { getAllUsers } from userFunctions
 
@@ -22,10 +22,10 @@ export const userSchema = Joi.defaults(schema => {
 		.min(24),
 		username: Joi.string()
 		.min(1)
-		.required,
+		.required(),
 		password: Joi.string()
 		.min(1)
-		.required,
+		.required(),
 	})
 	.unknown(false)
 
@@ -37,13 +37,13 @@ export const channelMessageSchema = Joi.defaults(schema => {
 		.min(24),
 		text: Joi.string()
 		.min(1)
-		.required,
+		.required(),
 		channel: Joi.string()
 		.min(1)
-		.required,
+		.required(),
 		user: Joi.string()
 		.min(1)
-		.required,
+		.required(),
 	})
 	.unknown(false)
 
@@ -55,10 +55,10 @@ export const channelMessageSchema = Joi.defaults(schema => {
 		.min(24),
 		text: Joi.string()
 		.min(1)
-		.required,
+		.required(),
 		receivingUser: Joi.string()
 		.min(1)
-		.required,
+		.required(),
 		sendingUser: Joi.string()
 		.min(1)
 		.required()
@@ -70,12 +70,14 @@ export function isValidUser(user: User): boolean {
 	return !result.error
 }
 
-export function isValidDirectMessage(directMessage: DirectMessage): boolean {
+export function isValidDirectMessage(directMessage: DirectMessageWithoutId): boolean {
 	let result = directMessageSchema.validate(directMessage)
+	console.log(result.error)
 	return !result.error
 }
 
 export function isValidChannelMessage(channelMessage: ChannelMessage): boolean {
-	let result = userSchema.validate(channelMessage)
+	let result = channelMessageSchema.validate(channelMessage)
+	console.log(result.error)
 	return !result.error
 }

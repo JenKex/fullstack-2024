@@ -13,7 +13,10 @@ export async function getOneUsersDirectMessages(user: string): Promise<WithId<Di
     
             const cursor: FindCursor <WithId<DirectMessage>> = x.collection.find({$or: [{receivingUser: user}, {sendingUser: user}]})
             const found: WithId<DirectMessage>[] = await cursor.toArray()
-            x.client.close()
+            if (x){
+                console.log('getOneUsersDirectMessages: client.close', user)
+                await x.client.close()
+            }
             
             if(found.length < 1) {
                 console.log( "No DMs found for this user.");

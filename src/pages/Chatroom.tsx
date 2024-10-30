@@ -8,6 +8,7 @@ export const Chatroom: React.FC = () => {
     // Lägg in en useEffect som get-ar chattmeddelanden baserat på antingen path av useLocation eller passade props.
 
     const [directMessageList, setDirectMessageList] = useState<DirectMessage[]>([])
+    const [newText, setNewText] = useState<string>('')
 
     const {pathname} = useLocation()
     const path = pathname
@@ -15,23 +16,39 @@ export const Chatroom: React.FC = () => {
     .split("/") 
     .slice(1);
 
-    useEffect(() => {
-      async function getDirectMessages(){
-        const loggedInUser = localStorage.getItem('username')
-        const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`)
-        let directMessages = await response.json()
-        let trimmedDirectMessages: DirectMessage[] = []
-        let x: number = 0
-        for (let i = 0; i < directMessages.length; i++){
-          if (directMessages[i].sendingUser == loggedInUser && directMessages[i].receivingUser == path || directMessages[i].receivingUser == loggedInUser && directMessages[i].sendingUser == path){
-            trimmedDirectMessages[x] = directMessages[i]
-            x++
-          }
+    async function getDirectMessages(){
+      const loggedInUser = localStorage.getItem('username')
+      const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`)
+      let directMessages = await response.json()
+      let trimmedDirectMessages: DirectMessage[] = []
+      let x: number = 0
+      for (let i = 0; i < directMessages.length; i++){
+        if (directMessages[i].sendingUser == loggedInUser && directMessages[i].receivingUser == path || directMessages[i].receivingUser == loggedInUser && directMessages[i].sendingUser == path){
+          trimmedDirectMessages[x] = directMessages[i]
+          x++
         }
-        console.log('ChatRoom useEffect: ', directMessages)
-        setDirectMessageList(trimmedDirectMessages)
       }
+      console.log('ChatRoom useEffect: ', directMessages)
+      setDirectMessageList(trimmedDirectMessages)
+    }
 
+    async function postMessage(text: string){
+      console.log('Test.')
+      const sendingUser: string = localStorage.getItem('username') || ''
+      const receivingUser: string = path[0]
+      const newMessage = { text, sendingUser, receivingUser }
+      console.log(newMessage)
+      await fetch('/api/direct-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newMessage)
+      })
+      await getDirectMessages()
+    }
+
+    useEffect(() => {
       getDirectMessages()
     }, [])
 
@@ -39,20 +56,15 @@ export const Chatroom: React.FC = () => {
 
     return <div className="display">
     <header>
-      {/* <div>Channels</div>
-      <div>Users</div> */}
       <button onClick={() => navigate('/')}>Home</button>
     </header>
     <main>
       <div className="chatroom">
-        {/* <div className="chat-messages"> */}
         {directMessageList.map((directMessage: DirectMessage) => (
           <DirectMessageBubble key={directMessage.messageId} {...directMessage}></DirectMessageBubble> 
         ))}
-          {/* <DirectMessageBubble sendingUser='johnDoe' text='Hey!' receivingUser='Mary'></DirectMessageBubble>
-          <DirectMessageBubble sendingUser='Mary' text="What's up?!" receivingUser='johnDoe'></DirectMessageBubble>
-          <DirectMessageBubble sendingUser='johnDoe' text="You don't have to shout at me :(" receivingUser='Mary'></DirectMessageBubble> */}
-        {/* </div> */}
+        <input type="text" value={newText} onChange={(e) => setNewText(e.target.value)} className="text-input"></input>
+        <button onClick={() => postMessage(newText)}>Post</button>
       </div>
     </main>
   </div>

@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
         const channelMessage = req.body;
         if (isValidChannelMessage(channelMessage)) {
             await insertChannelMessage(channelMessage);
-            res.sendStatus(204);
+            res.sendStatus(201);
         }
         else {
             res.sendStatus(400);

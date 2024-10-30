@@ -39,8 +39,8 @@ interface ErrorWithMessage {
 }
 
 router.post('/', async (req: Request, res: Response) => {
-    // Joi-validera.
-    const directMessage: DirectMessage = req.body
+    // const directMessage: DirectMessageWithoutId = req.body
+    const directMessage: DirectMessage = req.body    
     if (isValidDirectMessage(directMessage)){
         await insertDirectMessage(directMessage)
         res.sendStatus(201)

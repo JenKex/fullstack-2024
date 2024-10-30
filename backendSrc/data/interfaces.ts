@@ -20,7 +20,6 @@ export interface ChannelMessage{
 
 export interface DirectMessage{
     text: string,
-    // För unikhets skull borde receivingUser och sendingUser här vara ett userId. Börjar med att bygga en bas och ändrar efterhand.
     receivingUser: string,
     sendingUser: string,
     // Antagligen enklare att sortera på timestamp än att sortera på messageId. Genereras automatiskt.
@@ -28,6 +27,13 @@ export interface DirectMessage{
     // messageId: number
     timestamp?: Date
     messageId: number
+}
+
+export interface DirectMessageWithoutId{
+    text: string,
+    receivingUser: string,
+    sendingUser: string,
+    timestamp?: Date
 }
 
 export interface User{

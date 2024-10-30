@@ -8,6 +8,7 @@ export const Channel: React.FC = () => {
     // Lägg in en useEffect som get-ar chattmeddelanden baserat på antingen path av useLocation eller passade props.
 
     const [channelMessageList, setChannelMessageList] = useState<ChannelMessage[]>([])
+    const [newText, setNewText] = useState<string>('')
 
     const {pathname} = useLocation()
     const path = pathname
@@ -15,14 +16,30 @@ export const Channel: React.FC = () => {
     .split("/") 
     .slice(1);
 
-    useEffect(() => {
-      async function getChannelMessages(){
-        const response: Response | null = await fetch(`/api/channel-messages/${path}`)
-        let channelMessages = await response.json()
-        console.log('ChatRoom useEffect: ', channelMessages)
-        setChannelMessageList(channelMessages)
-      }
+    async function getChannelMessages(){
+      const response: Response | null = await fetch(`/api/channel-messages/${path}`)
+      let channelMessages = await response.json()
+      console.log('ChatRoom useEffect: ', channelMessages)
+      setChannelMessageList(channelMessages)
+    }
 
+    async function postMessage(text: string){
+      console.log('Test.')
+      const user: string = localStorage.getItem('username') || 'Guest'
+      const channel: string = path[0]
+      const newMessage = { text, user, channel }
+      console.log(newMessage)
+      await fetch('/api/channel-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newMessage)
+      })
+      await getChannelMessages()
+    }
+
+    useEffect(() => {
       getChannelMessages()
     }, [])
 
@@ -40,10 +57,8 @@ export const Channel: React.FC = () => {
         {channelMessageList.map((channelMessage: ChannelMessage) => (
           <ChannelMessageBubble key={channelMessage.messageId} {...channelMessage}></ChannelMessageBubble> 
         ))}
-          {/* <DirectMessageBubble sendingUser='johnDoe' text='Hey!' receivingUser='Mary'></DirectMessageBubble>
-          <DirectMessageBubble sendingUser='Mary' text="What's up?!" receivingUser='johnDoe'></DirectMessageBubble>
-          <DirectMessageBubble sendingUser='johnDoe' text="You don't have to shout at me :(" receivingUser='Mary'></DirectMessageBubble> */}
-        {/* </div> */}
+        <input type="text" onChange={(e) => setNewText(e.target.value)} value={newText} className="channel-input"></input>
+        <button onClick={() => postMessage(newText)}>Post</button>
       </div>
     </main>
   </div>

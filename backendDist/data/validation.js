@@ -19,10 +19,10 @@ export const userSchema = Joi.defaults(schema => {
         .min(24),
     username: Joi.string()
         .min(1)
-        .required,
+        .required(),
     password: Joi.string()
         .min(1)
-        .required,
+        .required(),
 })
     .unknown(false);
 export const channelMessageSchema = Joi.defaults(schema => {
@@ -33,13 +33,13 @@ export const channelMessageSchema = Joi.defaults(schema => {
         .min(24),
     text: Joi.string()
         .min(1)
-        .required,
+        .required(),
     channel: Joi.string()
         .min(1)
-        .required,
+        .required(),
     user: Joi.string()
         .min(1)
-        .required,
+        .required(),
 })
     .unknown(false);
 export const directMessageSchema = Joi.defaults(schema => {
@@ -50,10 +50,10 @@ export const directMessageSchema = Joi.defaults(schema => {
         .min(24),
     text: Joi.string()
         .min(1)
-        .required,
+        .required(),
     receivingUser: Joi.string()
         .min(1)
-        .required,
+        .required(),
     sendingUser: Joi.string()
         .min(1)
         .required()
@@ -65,9 +65,11 @@ export function isValidUser(user) {
 }
 export function isValidDirectMessage(directMessage) {
     let result = directMessageSchema.validate(directMessage);
+    console.log(result.error);
     return !result.error;
 }
 export function isValidChannelMessage(channelMessage) {
-    let result = userSchema.validate(channelMessage);
+    let result = channelMessageSchema.validate(channelMessage);
+    console.log(result.error);
     return !result.error;
 }

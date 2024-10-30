@@ -2,6 +2,7 @@ import express from "express";
 import { getAllDirectMessages } from "../mongoDBSrc/DirectMessageFunctions/getAllDirectMessages.js";
 import { getOneUsersDirectMessages } from "../mongoDBSrc/DirectMessageFunctions/getOneUsersDirectMessages.js";
 import { insertDirectMessage } from "../mongoDBSrc/DirectMessageFunctions/insertDirectMessage.js";
+import { isValidDirectMessage } from "../data/validation.js";
 export const router = express.Router();
 // Känns egentligen lite som att man borde ha mini-routes baserat på userId i dessa -- t.ex. /direct-messages/johnDoe -- vilket man skulle kunna göra med get/:id, och kanske förenklar renderingen sedan?
 router.get('/', async (_, res) => {
@@ -29,8 +30,13 @@ router.get('/:id', async (req, res) => {
     }
 });
 router.post('/', async (req, res) => {
-    // Joi-validera.
+    // const directMessage: DirectMessageWithoutId = req.body
     const directMessage = req.body;
-    await insertDirectMessage(directMessage);
-    res.sendStatus(201);
+    if (isValidDirectMessage(directMessage)) {
+        await insertDirectMessage(directMessage);
+        res.sendStatus(201);
+    }
+    else {
+        res.sendStatus(400);
+    }
 });

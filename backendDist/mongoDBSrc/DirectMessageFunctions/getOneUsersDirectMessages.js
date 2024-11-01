@@ -6,10 +6,10 @@ export async function getOneUsersDirectMessages(user) {
         x = await connectToDatabase("directMessages");
         const cursor = x.collection.find({ $or: [{ receivingUser: user }, { sendingUser: user }] });
         const found = await cursor.toArray();
-        if (x) {
-            console.log('getOneUsersDirectMessages: client.close', user);
-            await x.client.close();
-        }
+        // if (x){
+        //     console.log('getOneUsersDirectMessages: client.close', user)
+        //     await x.client.close()
+        // }
         if (found.length < 1) {
             console.log("No DMs found for this user.");
         }
@@ -20,8 +20,8 @@ export async function getOneUsersDirectMessages(user) {
         throw error;
     }
     finally {
-        // if(x) {
-        //     await x.client.close()
-        // }
+        if (x) {
+            await x.client.close();
+        }
     }
 }

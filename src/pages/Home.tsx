@@ -12,6 +12,7 @@ const Home: React.FC = () => {
   let [chatroomState, setChatroomState] = useState<string[]>([])
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
   const [currentUser, setCurrentUser] =  useState<string>('')
+  const [hasRunOnce, setHasRunOnce] = useState<boolean>(false)
 
 
   // Tanke bakom den här funktionen:
@@ -24,46 +25,53 @@ const Home: React.FC = () => {
   // PROBLEM: Behöver skriva om så att JWT-Verify körs på token, men vill inte ha en dedikerad get/protected utan hämta ifrån get/:id -- detta betyder dock att verify behöver köras ifrån frontend för att parsea ut användaren från JWT-token.
   // PROBLEM: Server-hämtning funkar inte -- kör ifrån hårdkodad data för att testa funktionen.
 
-  useEffect(() => {
-    async function renderChatrooms(): Promise<void> {
-      let chatrooms: string[] = []
-      let x: number = 0
-      if (localStorage.getItem(LS_KEY)) {
-        setIsLoggedIn(true)
-        const loggedInUser = localStorage.getItem('username') || ''
-        setCurrentUser(loggedInUser)
-        console.log(loggedInUser)
-        const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`)
-        if (response) {
-          const data = await response.json()
-          console.log('Home.tsx, renderChatrooms, useEffect', data)
-          for (let i = 0; i < data.length; i++) {
-            if (loggedInUser === data[i].sendingUser) {
-              if (chatrooms.includes(data[i].receivingUser)) {
+  // PROBLEM: Kan förhindra dubbelrendering med useRef, en bool, variabel eller liknande för att se till att funktionen inte försöker ladda två gånger och hämta data som får den att parsea fel data, men försöker göra best practices och initialisera klient+hämta samlingar istället. Skriver om detta 2024-11-01, och implementerar då också JWT-verifiering. 
 
-              }
-              else {
-                chatrooms[x] = data[i].receivingUser
-                x++
-              }
+  async function renderChatrooms(): Promise<void> {
+    let chatrooms: string[] = []
+    let x: number = 0
+    if (localStorage.getItem(LS_KEY)) {
+      setIsLoggedIn(true)
+      const loggedInUser = localStorage.getItem('username') || ''
+      setCurrentUser(loggedInUser)
+      console.log(loggedInUser)
+      const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`)
+      // const rawText = await response.text()
+      // console.log('Raw response', rawText)
+      if (response.ok) {
+        const data = await response.json()
+        // const data = JSON.parse(rawText)
+        console.log('Home.tsx, renderChatrooms, useEffect', data)
+        for (let i = 0; i < data.length; i++) {
+          if (loggedInUser === data[i].sendingUser) {
+            if (chatrooms.includes(data[i].receivingUser)) {
+
             }
-            else if (loggedInUser === data[i].receivingUser) {
-              if (chatrooms.includes(data[i].sendingUser)) {
+            else {
+              chatrooms[x] = data[i].receivingUser
+              x++
+            }
+          }
+          else if (loggedInUser === data[i].receivingUser) {
+            if (chatrooms.includes(data[i].sendingUser)) {
 
-              }
-              else {
-                chatrooms[x] = data[i].sendingUser
-                x++
-              }
+            }
+            else {
+              chatrooms[x] = data[i].sendingUser
+              x++
             }
           }
         }
+        setChatroomState(chatrooms)
       }
-      setChatroomState(chatrooms)
     }
+    setHasRunOnce(true)
+  }
 
-
-    renderChatrooms()
+  useEffect(() => {
+    if (!hasRunOnce){
+      renderChatrooms()
+    }
 
     // function renderChatroomsTest() {
     //   let x: number = 0

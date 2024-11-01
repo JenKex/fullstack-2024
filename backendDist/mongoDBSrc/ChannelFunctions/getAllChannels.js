@@ -1,8 +1,10 @@
 import { connectToDatabase } from "../connection.js";
 let x;
 export async function getAllChannels() {
+    // if (x){
+    // }
     try {
-        console.log('Testning.');
+        console.log('GetAllChannels: Testning.');
         x = await connectToDatabase("channels");
         const cursor = x.collection.find({});
         const found = await cursor.toArray();
@@ -16,7 +18,7 @@ export async function getAllChannels() {
         throw error;
     }
     finally {
-        if (x) {
+        if (x && x.client) {
             await x.client.close();
         }
     }

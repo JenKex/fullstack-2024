@@ -13,10 +13,10 @@ export async function getOneUsersDirectMessages(user: string): Promise<WithId<Di
     
             const cursor: FindCursor <WithId<DirectMessage>> = x.collection.find({$or: [{receivingUser: user}, {sendingUser: user}]})
             const found: WithId<DirectMessage>[] = await cursor.toArray()
-            if (x){
-                console.log('getOneUsersDirectMessages: client.close', user)
-                await x.client.close()
-            }
+            // if (x){
+            //     console.log('getOneUsersDirectMessages: client.close', user)
+            //     await x.client.close()
+            // }
             
             if(found.length < 1) {
                 console.log( "No DMs found for this user.");
@@ -27,8 +27,8 @@ export async function getOneUsersDirectMessages(user: string): Promise<WithId<Di
             console.error('Error fetching DMs.', error);
             throw error;
         }finally {
-            // if(x) {
-            //     await x.client.close()
-            // }
+            if(x) {
+                await x.client.close()
+            }
         }
 }

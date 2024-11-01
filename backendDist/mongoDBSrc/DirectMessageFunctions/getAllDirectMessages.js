@@ -1,10 +1,9 @@
 import { connectToDatabase } from "../connection.js";
-let x;
 export async function getAllDirectMessages() {
     try {
-        console.log('Testning.');
-        x = await connectToDatabase("directMessages");
-        const cursor = x.collection.find({});
+        console.log('getAllDirectMessages: Testning.');
+        let collection = await connectToDatabase("directMessages");
+        const cursor = collection.find({});
         const found = await cursor.toArray();
         // if(x) {
         //     await x.client.close()
@@ -17,11 +16,5 @@ export async function getAllDirectMessages() {
     catch (error) {
         console.error('Error fetching DMs.', error);
         throw error;
-    }
-    finally {
-        if (x) {
-            console.log('getAllDirectMessages: client.close');
-            await x.client.close();
-        }
     }
 }

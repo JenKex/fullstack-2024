@@ -65,11 +65,11 @@ export function isValidUser(user) {
 }
 export function isValidDirectMessage(directMessage) {
     let result = directMessageSchema.validate(directMessage);
-    console.log(result.error);
+    console.log(result);
     return !result.error;
 }
 export function isValidChannelMessage(channelMessage) {
     let result = channelMessageSchema.validate(channelMessage);
-    console.log(result.error);
+    console.log(result);
     return !result.error;
 }

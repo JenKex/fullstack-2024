@@ -1,28 +1,22 @@
 import { connectToDatabase } from "../connection.js";
-let x;
 export async function insertDirectMessage(directMessage) {
     try {
-        x = await connectToDatabase('directMessages');
+        let collection = await connectToDatabase('directMessages');
         const timestamp = new Date();
-        const cursor = x.collection.find({}).sort({ messageId: -1 }).limit(1);
+        const cursor = collection.find({}).sort({ messageId: -1 }).limit(1);
         const previousMaxMessage = await cursor.toArray();
         const previousMaxMessageId = previousMaxMessage[0].messageId;
         directMessage = { ...directMessage,
             timestamp: timestamp,
             messageId: (previousMaxMessageId + 1)
         };
-        const result = await x.collection.insertOne(directMessage);
+        const result = await collection.insertOne(directMessage);
+        console.log('Här är det nya objekt-IDet:', result.insertedId);
         return result.insertedId;
     }
     catch (error) {
         console.log('Error inserting messages.');
         throw error;
-    }
-    finally {
-        if (x) {
-            console.log('insertDirectMessage: client.close');
-            await x.client.close();
-        }
     }
 }
 // export async function insertDirectMessage(directMessage: DirectMessageWithoutId): Promise<ObjectId | null>{

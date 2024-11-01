@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { channels } from "../../backendSrc/data/content.js"
 import { ChannelListItem } from "../data/components/ChannelListItem.js"
-// import { DirectMessage } from "../data/interfaces.js"
-// import { DMListItem } from "../data/components/DMListItem.js"
 
 const Home: React.FC = () => {
 
@@ -12,7 +10,6 @@ const Home: React.FC = () => {
   let [chatroomState, setChatroomState] = useState<string[]>([])
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
   const [currentUser, setCurrentUser] =  useState<string>('')
-  const [hasRunOnce, setHasRunOnce] = useState<boolean>(false)
 
 
   // Tanke bakom den här funktionen:
@@ -36,11 +33,8 @@ const Home: React.FC = () => {
       setCurrentUser(loggedInUser)
       console.log(loggedInUser)
       const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`)
-      // const rawText = await response.text()
-      // console.log('Raw response', rawText)
       if (response.ok) {
         const data = await response.json()
-        // const data = JSON.parse(rawText)
         console.log('Home.tsx, renderChatrooms, useEffect', data)
         for (let i = 0; i < data.length; i++) {
           if (loggedInUser === data[i].sendingUser) {
@@ -65,53 +59,13 @@ const Home: React.FC = () => {
         setChatroomState(chatrooms)
       }
     }
-    setHasRunOnce(true)
   }
 
   useEffect(() => {
-    if (!hasRunOnce){
       renderChatrooms()
-    }
-
-    // function renderChatroomsTest() {
-    //   let x: number = 0
-    //   if (localStorage.getItem('username')) {
-    //     setIsLoggedIn(true)
-    //     const loggedInUser = localStorage.getItem('username')
-    //       for (let i = 0; i < directMessages.length; i++) {
-    //         console.log(chatrooms)
-    //         if (loggedInUser === directMessages[i].sendingUser) {
-    //           if (chatrooms.includes(directMessages[i].receivingUser)) {
-
-    //           }
-    //           else {
-    //             chatrooms[x] = directMessages[i].receivingUser
-    //             x++
-    //           }
-    //         }
-    //         else if (loggedInUser === directMessages[i].receivingUser) {
-    //           if (chatrooms.includes(directMessages[i].sendingUser)) {
-
-    //           }
-    //           else {
-    //           chatrooms[x] = directMessages[i].sendingUser
-    //           x++
-    //         }
-    //       }
-    //     }
-    //   }
-    //   setChatroomState(chatrooms)
-    // }
-
-    // renderChatroomsTest()
   }, [])
 
   const navigate = useNavigate()
-
-  // async function testGetAll() {
-  //   const response = await fetch('/api/users')
-  //   console.log(await response.json())
-  // }
 
   function logOut() {
     localStorage.removeItem(LS_KEY)
@@ -123,8 +77,6 @@ const Home: React.FC = () => {
   return (
     <div className="display">
       <header>
-        {/* <div>Channels</div>
-        <div>Users</div> */}
 
         {isLoggedIn ?
         <div>

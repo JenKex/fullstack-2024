@@ -3,6 +3,9 @@ import { getAllDirectMessages } from "../mongoDBSrc/DirectMessageFunctions/getAl
 import { getOneUsersDirectMessages } from "../mongoDBSrc/DirectMessageFunctions/getOneUsersDirectMessages.js";
 import { insertDirectMessage } from "../mongoDBSrc/DirectMessageFunctions/insertDirectMessage.js";
 import { isValidDirectMessage } from "../data/validation.js";
+// import { getOneUser } from "../mongoDBSrc/UserFunctions/getOneUser.js"
+// import jwt from 'jsonwebtoken'
+// const { verify } = jwt
 export const router = express.Router();
 // Känns egentligen lite som att man borde ha mini-routes baserat på userId i dessa -- t.ex. /direct-messages/johnDoe -- vilket man skulle kunna göra med get/:id, och kanske förenklar renderingen sedan?
 router.get('/', async (_, res) => {
@@ -18,8 +21,36 @@ router.get('/', async (_, res) => {
     }
 });
 router.get('/:id', async (req, res) => {
+    // PROBLEM: req.headers.authorization känns inte av i sajten.
+    // try {
+    //     if( !process.env.SECRET ) {
+    //         res.sendStatus(500)
+    //         return
+    //     }
+    //     let token = req.headers["authorization"]
+    //     console.log('Header:', token)
+    //     if (!token) {
+    //         res.sendStatus(401)
+    //         return
+    //     }
+    //     let payload: Payload
+    //     try {
+    //         payload = verify(token, process.env.SECRET) as Payload
+    //         console.log('Payload: ', payload)
+    //     } catch (error) {
+    //         res.sendStatus(400) // bad request
+    //         return
+    //     }
+    //     let userId: number = payload.userId
+    //     // Korrekt JWT! Nu kan vi leta upp användaren
+    //     const user = await getOneUser(userId)
+    //     if (!user) {
+    //         res.sendStatus(404) // not found
+    //         return
+    //     }
     try {
         const id = req.params.id;
+        // if id ej är en giltig användare: 404
         const result = await getOneUsersDirectMessages(id);
         res.send(result);
     }

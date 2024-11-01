@@ -72,12 +72,12 @@ export function isValidUser(user: User): boolean {
 
 export function isValidDirectMessage(directMessage: DirectMessageWithoutId): boolean {
 	let result = directMessageSchema.validate(directMessage)
-	console.log(result.error)
+	console.log(result)
 	return !result.error
 }
 
 export function isValidChannelMessage(channelMessage: ChannelMessage): boolean {
 	let result = channelMessageSchema.validate(channelMessage)
-	console.log(result.error)
+	console.log(result)
 	return !result.error
 }

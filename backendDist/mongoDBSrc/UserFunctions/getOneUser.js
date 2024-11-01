@@ -1,9 +1,9 @@
 import { connectToDatabase } from "../connection.js";
-export async function getAllUsers() {
+export async function getOneUser(userId) {
     try {
-        console.log('Test: GetAllUsers.');
+        console.log('Test: GetOneUser.');
         let collection = await connectToDatabase("users");
-        const cursor = collection.find({});
+        const cursor = collection.find({ userId: userId });
         const found = await cursor.toArray();
         if (found.length < 1) {
             console.log("No users registered.");

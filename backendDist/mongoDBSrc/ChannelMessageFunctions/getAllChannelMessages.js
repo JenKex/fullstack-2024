@@ -1,10 +1,9 @@
 import { connectToDatabase } from "../connection.js";
-let x;
 export async function getAllChannelMessages() {
     try {
         console.log('Testning.');
-        x = await connectToDatabase("channelMessages");
-        const cursor = x.collection.find({});
+        let collection = await connectToDatabase("channelMessages");
+        const cursor = collection.find({});
         const found = await cursor.toArray();
         if (found.length < 1) {
             console.log("No posts to channels registered.");
@@ -15,9 +14,24 @@ export async function getAllChannelMessages() {
         console.error('Error fetching posts to channels.', error);
         throw error;
     }
-    finally {
-        if (x) {
-            await x.client.close();
-        }
-    }
 }
+// let x: ClientType<ChannelMessageDocument> 
+// export async function getAllChannelMessages(): Promise<WithId<ChannelMessage>[]> {
+//         try {
+//             console.log('Testning.')
+//             x = await connectToDatabase<ChannelMessageDocument>("channelMessages")
+//             const cursor: FindCursor <WithId<ChannelMessage>> = x.collection.find({})
+//             const found: WithId<ChannelMessage>[] = await cursor.toArray()
+//             if(found.length < 1) {
+//                 console.log( "No posts to channels registered.");
+//             }
+//         return found
+//         }catch (error) {
+//             console.error('Error fetching posts to channels.', error);
+//             throw error;
+//         }finally {
+//             if(x) {
+//                 await x.client.close()
+//             }
+//         }
+// }

@@ -1,17 +1,16 @@
 import { FindCursor, WithId } from "mongodb";
-import { User, ClientType } from "../../data/interfaces.js"; 
+import { User } from "../../data/interfaces.js"; 
 import { connectToDatabase } from "../connection.js";
 
-type UserDocument = User & Document; 
-let x: ClientType<UserDocument> 
+type UserDocument = User & Document;
 
 export async function getAllUsers(): Promise<WithId<User>[]> {
 
         try {
             console.log('Test: GetAllUsers.')
-            x = await connectToDatabase<UserDocument>("users")
+            let collection = await connectToDatabase<UserDocument>("users")
     
-            const cursor: FindCursor <WithId<User>> = x.collection.find({})
+            const cursor: FindCursor <WithId<User>> = collection.find({})
             const found: WithId<User>[] = await cursor.toArray()
             
             if(found.length < 1) {
@@ -22,9 +21,5 @@ export async function getAllUsers(): Promise<WithId<User>[]> {
         }catch (error) {
             console.error('Error fetching users.', error);
             throw error;
-        }finally {
-            if(x) {
-                await x.client.close()
-            }
         }
 }

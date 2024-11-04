@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { channels } from "../../backendSrc/data/content.js"
+import { Channel } from "../data/interfaces.js"
+// import { channels } from "../../backendSrc/data/content.js"
 import { ChannelListItem } from "../data/components/ChannelListItem.js"
 
 const Home: React.FC = () => {
 
   const LS_KEY = 'JWT_TOKEN'
   // let chatrooms: string[] = []
+  let [channelState, setChannelState] = useState<Channel[]>([])
   let [chatroomState, setChatroomState] = useState<string[]>([])
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
   const [currentUser, setCurrentUser] =  useState<string>('')
@@ -23,6 +25,21 @@ const Home: React.FC = () => {
   // PROBLEM: Server-hämtning funkar inte -- kör ifrån hårdkodad data för att testa funktionen.
 
   // PROBLEM: Kan förhindra dubbelrendering med useRef, en bool, variabel eller liknande för att se till att funktionen inte försöker ladda två gånger och hämta data som får den att parsea fel data, men försöker göra best practices och initialisera klient+hämta samlingar istället. Skriver om detta 2024-11-01, och implementerar då också JWT-verifiering. 
+
+  async function renderChannels(): Promise<void>{
+    let channels: Channel[] = []
+    let x: number = 0
+    const response: Response | null = await fetch('/api/channels/')
+    if (response.ok){
+      const data = await response.json()
+      console.log('Home.tsx, renderChannels, useEffect', data)
+      for (let i = 0; i < data.length; i++) {
+        channels[x] = data[i]
+        x++
+      }
+    }
+    setChannelState(channels)
+  }
 
   async function renderChatrooms(): Promise<void> {
     let chatrooms: string[] = []
@@ -62,6 +79,7 @@ const Home: React.FC = () => {
   }
 
   useEffect(() => {
+      renderChannels()
       renderChatrooms()
   }, [])
 
@@ -92,7 +110,7 @@ const Home: React.FC = () => {
       <main>
         <nav>
           <ul> <b>Channels</b>
-            {channels.map((channel) => (
+            {channelState.map((channel) => (
               <ChannelListItem key={channel.name} {...channel}></ChannelListItem>
             ))}
           </ul>

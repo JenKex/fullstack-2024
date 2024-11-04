@@ -1,12 +1,6 @@
 import { MongoClient } from 'mongodb';
-// Global variable to hold the MongoClient instance
 const con = process.env.CONNECTION_STRING;
 let clientInstance = null;
-// Generic client/collection return type
-// interface ClientType<T extends Document> {
-//     client: MongoClient;
-//     collection: Collection<T>;
-// }
 export async function initializeMongoClient() {
     if (!clientInstance) {
         if (!con) {

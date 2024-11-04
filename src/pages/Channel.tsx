@@ -51,8 +51,8 @@ export const Channel: React.FC = () => {
       <div>Users</div> */}
       <button onClick={() => navigate('/')}>Home</button>
     </header>
-    <main>
-      <div className="chatroom">
+    <main className="channel-main">
+      <div className="channel">
         {/* <div className="chat-messages"> */}
         {channelMessageList.map((channelMessage: ChannelMessage) => (
           <ChannelMessageBubble key={channelMessage.messageId} {...channelMessage}></ChannelMessageBubble> 

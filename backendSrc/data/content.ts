@@ -20,7 +20,7 @@ let channelMessages: ChannelMessage[] = [{
   messageId: 1
 },
 {
-  text: "Just started a new movie role, super excited!",
+  text: "if there's anything I love it's having UNREQUITED FEELINGS boy howdy i sure love having UNREQUITED FEELINGS for my BEST FRIEND",
   channel: "Drama",
   user: "emmaStone",
   messageId: 2
@@ -38,7 +38,7 @@ let channelMessages: ChannelMessage[] = [{
   messageId: 4
 },
 {
-  text: "Did you hear about the latest celebrity drama?",
+  text: "Emma, please. We talked about this.",
   channel: "Drama",
   user: "janeSmith",
   messageId: 5
@@ -50,13 +50,13 @@ let channelMessages: ChannelMessage[] = [{
   messageId: 6
 },
 {
-  text: "Looking forward to hanging out with everyone!",
+  text: "Hey everyone! Are we still meeting up for beer and biscuits at the Bar Exam? 😊",
   channel: "Allmänt",
   user: "johnDoe",
   messageId: 7
 },
 {
-  text: "Let's talk about some new acting techniques.",
+  text: "We clearly didn't talk enough!!",
   channel: "Drama",
   user: "emmaStone",
   messageId: 8
@@ -68,7 +68,7 @@ let channelMessages: ChannelMessage[] = [{
   messageId: 9
 },
 {
-  text: "Wow, this channel is really active today!",
+  text: "I'd love to! :)",
   channel: "Allmänt",
   user: "alexJohnson",
   messageId: 10

@@ -44,12 +44,19 @@ const Home: React.FC = () => {
   async function renderChatrooms(): Promise<void> {
     let chatrooms: string[] = []
     let x: number = 0
-    if (localStorage.getItem(LS_KEY)) {
+    const token = localStorage.getItem(LS_KEY)
+    if (token) {
       setIsLoggedIn(true)
       const loggedInUser = localStorage.getItem('username') || ''
       setCurrentUser(loggedInUser)
       console.log(loggedInUser)
-      const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`)
+      const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization' : token ? token : ''
+        }
+      })
       if (response.ok) {
         const data = await response.json()
         console.log('Home.tsx, renderChatrooms, useEffect', data)
@@ -75,6 +82,9 @@ const Home: React.FC = () => {
         }
         setChatroomState(chatrooms)
       }
+    }
+    else{
+      return
     }
   }
 
@@ -120,7 +130,7 @@ const Home: React.FC = () => {
             ))}
           </ul>
         </nav>
-        <div>Welcome to NySpace! Join the conversation in one of our forum channels,
+        <div className="front-page-blurb">Welcome to NySpace! Join the conversation in one of our forum channels,
           or just find your favorite folks and chat them up!
         </div>
       </main>

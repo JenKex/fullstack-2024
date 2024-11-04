@@ -1,17 +1,19 @@
 import Joi from 'joi'
 import { ChannelMessage, DirectMessageWithoutId, User } from '../data/interfaces.js' 
-import { users } from './content.js'
-// import { getAllUsers } from userFunctions
+// import { users } from './content.js'
+import { getAllUsers } from '../mongoDBSrc/UserFunctions/getAllUsers.js'
 
 //Gör denna async och kör en fetch på användare i databasen.
 export async function validateLogin(username: string, password: string): Promise<number | null> {
-	// const users = await getAllUsers()
+	const users = await getAllUsers()
 	const matchingUser = users.find(user => user.username === username && user.password === password)
 	if( matchingUser ) {
 		return matchingUser.userId
 	}
-	console.log('Fel användarnamn eller lösenord. :(')
-	return null
+	else{
+		console.log('Fel användarnamn eller lösenord. :(')
+		return null
+	}
 }
 
 export const userSchema = Joi.defaults(schema => {

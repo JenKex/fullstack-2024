@@ -20,6 +20,8 @@ router.get('/', async (_, res) => {
         res.sendStatus(500);
     }
 });
+// router.get('/activeUser', async (_, res: Response) => {
+// })
 router.post('/login', (req, res) => {
     if (!process.env.SECRET) {
         res.sendStatus(500);

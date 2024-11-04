@@ -9,7 +9,8 @@ export const Chatroom: React.FC = () => {
 
     const [directMessageList, setDirectMessageList] = useState<DirectMessage[]>([])
     const [newText, setNewText] = useState<string>('')
-
+    
+    const LS_KEY = 'JWT_TOKEN'
     const {pathname} = useLocation()
     const path = pathname
     .slice(1)
@@ -18,7 +19,14 @@ export const Chatroom: React.FC = () => {
 
     async function getDirectMessages(){
       const loggedInUser = localStorage.getItem('username')
-      const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`)
+      const token = localStorage.getItem(LS_KEY)
+      const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization' : token ? token : ''
+        }
+      })
       let directMessages = await response.json()
       let trimmedDirectMessages: DirectMessage[] = []
       let x: number = 0
@@ -58,7 +66,7 @@ export const Chatroom: React.FC = () => {
     <header>
       <button onClick={() => navigate('/')}>Home</button>
     </header>
-    <main>
+    <main className="chatroom-main">
       <div className="chatroom">
         {directMessageList.map((directMessage: DirectMessage) => (
           <DirectMessageBubble key={directMessage.messageId} {...directMessage}></DirectMessageBubble> 

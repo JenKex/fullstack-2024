@@ -22,8 +22,8 @@ export async function insertDirectMessage(directMessage: DirectMessage): Promise
         return result.insertedId
     }
     catch (error){
-        console.log('Error inserting messages.')
-        throw error
+        console.log('Error inserting messages.', error)
+        return null
     }
 }
 

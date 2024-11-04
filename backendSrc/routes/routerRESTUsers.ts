@@ -25,24 +25,23 @@ router.get('/', async (_, res: Response) => {
     }
 })
 
+// router.get('/activeUser', async (_, res: Response) => {
+    
+// })
+
 router.post('/login', (req: Request, res: Response) => {
     if (!process.env.SECRET) {
         res.sendStatus(500)
         return
     }
-    // Klar: middleware för att ta emot body
-    // skicka tillbaka en JWT
 
     console.log('Body är: ', req.body)
     const userId = validateLogin(req.body.username, req.body.password)
     console.log('user id: ', userId)
     if (!userId) {
-        res.sendStatus(401)  // unauthorized
+        res.sendStatus(401)
         return
     }
-
-    // Make JWT
-    // res.send('"JWT"')
     const payload = {
         userId,
         username: req.body.username

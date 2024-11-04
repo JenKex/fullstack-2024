@@ -23,7 +23,7 @@ export async function insertChannelMessage(channelMessage: ChannelMessage): Prom
     }
     catch (error){
         console.log('Error posting to channel.', error)
-        throw error
+        return null
     }
 }
 

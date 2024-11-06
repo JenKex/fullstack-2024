@@ -130,8 +130,7 @@ const Home: React.FC = () => {
             ))}
           </ul>
         </nav>
-        <div className="front-page-blurb">Welcome to NySpace! Join the conversation in one of our forum channels,
-          or just find your favorite folks and chat them up!
+        <div className="front-page-blurb">Välkommen till SolarStorm! Träffa dina polare, snacka i allmänhet, och njut av erat goda häng! 😊
         </div>
       </main>
     </div>

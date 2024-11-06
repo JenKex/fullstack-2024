@@ -34,8 +34,11 @@ router.post('/', async (req, res) => {
     try {
         const channelMessage = req.body;
         if (isValidChannelMessage(channelMessage)) {
-            await insertChannelMessage(channelMessage);
+            const result = await insertChannelMessage(channelMessage);
             // Kan gå fel med denna funktionen, sätt in ett till valideringsvillkor ifall servern inte hittas.
+            if (result === null) {
+                res.sendStatus(404);
+            }
             res.sendStatus(201);
         }
         else {

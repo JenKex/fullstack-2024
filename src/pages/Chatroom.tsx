@@ -4,8 +4,8 @@ import { DirectMessageBubble } from "../data/components/DirectMessageBubble"
 import { DirectMessage } from "../data/interfaces"
 
 export const Chatroom: React.FC = () => {
-    // Att göra: Trimma pathname, gör ett getOneUsersDMs-call och filtrera på bara det som matchar 'sendingUser == loggedInUser || pathname && receivingUser == loggedInUser || pathname. Gör styling och lägg klasser på det som tas emot.
-    // Lägg in en useEffect som get-ar chattmeddelanden baserat på antingen path av useLocation eller passade props.
+    // Just nu trimmar detta pathname, gör ett getOneUsersDMs-call och filtrera på bara det som matchar 'sendingUser && receivingUser'. Gör styling och lägger klasser på det som tas emot.
+    // useEffect get-ar chattmeddelanden baserat på path av useLocation.
 
     const [directMessageList, setDirectMessageList] = useState<DirectMessage[]>([])
     const [newText, setNewText] = useState<string>('')
@@ -20,24 +20,29 @@ export const Chatroom: React.FC = () => {
     async function getDirectMessages(){
       const loggedInUser = localStorage.getItem('username')
       const token = localStorage.getItem(LS_KEY)
-      const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization' : token ? token : ''
+      if (token){
+        const response: Response | null = await fetch(`/api/direct-messages/${loggedInUser}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : token ? token : ''
+          }
+        })
+        let directMessages = await response.json()
+        let trimmedDirectMessages: DirectMessage[] = []
+        let x: number = 0
+        for (let i = 0; i < directMessages.length; i++){
+          if (directMessages[i].sendingUser == loggedInUser && directMessages[i].receivingUser == path || directMessages[i].receivingUser == loggedInUser && directMessages[i].sendingUser == path){
+            trimmedDirectMessages[x] = directMessages[i]
+            x++
+          }
         }
-      })
-      let directMessages = await response.json()
-      let trimmedDirectMessages: DirectMessage[] = []
-      let x: number = 0
-      for (let i = 0; i < directMessages.length; i++){
-        if (directMessages[i].sendingUser == loggedInUser && directMessages[i].receivingUser == path || directMessages[i].receivingUser == loggedInUser && directMessages[i].sendingUser == path){
-          trimmedDirectMessages[x] = directMessages[i]
-          x++
-        }
+        console.log('ChatRoom useEffect: ', directMessages)
+        setDirectMessageList(trimmedDirectMessages)
       }
-      console.log('ChatRoom useEffect: ', directMessages)
-      setDirectMessageList(trimmedDirectMessages)
+      else{
+        console.log('Du är just nu gäst och har kommit in på en route du inte ska vara i. Du behöver logga in för att se dina meddelanden.')
+      }
     }
 
     async function postMessage(text: string){

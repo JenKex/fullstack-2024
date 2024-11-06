@@ -21,7 +21,6 @@ router.get('/', async (_, res) => {
     }
 });
 router.get('/:id', async (req, res) => {
-    // PROBLEM: req.headers.authorization känns inte av i sajten.
     try {
         if (!process.env.SECRET) {
             res.sendStatus(500);
@@ -49,7 +48,6 @@ router.get('/:id', async (req, res) => {
             return;
         }
         const id = req.params.id;
-        // if id ej är en giltig användare: 404
         const result = await getOneUsersDirectMessages(id);
         res.send(result);
     }
@@ -63,7 +61,10 @@ router.post('/', async (req, res) => {
     // const directMessage: DirectMessageWithoutId = req.body
     const directMessage = req.body;
     if (isValidDirectMessage(directMessage)) {
-        await insertDirectMessage(directMessage);
+        const result = await insertDirectMessage(directMessage);
+        if (result === null) {
+            res.sendStatus(404);
+        }
         res.sendStatus(201);
     }
     else {

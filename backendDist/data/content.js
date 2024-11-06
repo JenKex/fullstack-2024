@@ -11,121 +11,121 @@ let channels = [{
         isLocked: true
     }];
 let channelMessages = [{
-        text: "Hey everyone, what games are you playing?",
+        text: "Halloj allihopa, vad spelar ni just nu?",
         channel: "Spelsnack",
         user: "johnDoe",
         messageId: 1
     },
     {
-        text: "Just started a new movie role, super excited!",
+        text: "jag älskar att ha ensidiga känslor! så underbart att ha ensidiga känslor för min bästa kompis!!",
         channel: "Drama",
         user: "emmaStone",
         messageId: 2
     },
     {
-        text: "Anyone got tips for improving in basketball?",
+        text: "Har någon kommit ner till Valand på senaste?",
         channel: "Allmänt",
         user: "mikeJordan",
         messageId: 3
     },
     {
-        text: "Can't wait for the new game release next month!",
+        text: "God of War 1 är det enda bra spelet. Inget illa ment och inget otrevligt. Bara ren sanning.",
         channel: "Spelsnack",
         user: "alexJohnson",
         messageId: 4
     },
     {
-        text: "Did you hear about the latest celebrity drama?",
+        text: "Emma, vi pratade ju om det här. :(",
         channel: "Drama",
         user: "janeSmith",
         messageId: 5
     },
     {
-        text: "I'm trying to beat my high score in this game.",
+        text: "God of War 2 är det enda bra spelet lmao",
         channel: "Spelsnack",
-        user: "mikeJordan",
+        user: "Gäst",
         messageId: 6
     },
     {
-        text: "Looking forward to hanging out with everyone!",
+        text: "Halloj! Träffas vi fortfarande för ett ölhäng på Tja-Tja? 😊",
         channel: "Allmänt",
         user: "johnDoe",
         messageId: 7
     },
     {
-        text: "Let's talk about some new acting techniques.",
+        text: "vi pratade inte tillräckligt!!",
         channel: "Drama",
         user: "emmaStone",
         messageId: 8
     },
     {
-        text: "I'm new here, any recommendations for the best games?",
+        text: "dom har gjort reboots och de e inte bra",
         channel: "Spelsnack",
-        user: "janeSmith",
+        user: "Gäst",
         messageId: 9
     },
     {
-        text: "Wow, this channel is really active today!",
+        text: "@mikeJordan nej, det har brunnit de senaste 24 timmarna. @johnDoe Skulle vara supernajs! :)",
         channel: "Allmänt",
         user: "alexJohnson",
         messageId: 10
     }];
 let directMessages = [{
-        text: "Hey, want to team up for that game?",
+        text: "Vill du köra lite Helldivers tillsammans nån gång?",
         receivingUser: "mikeJordan",
         sendingUser: "johnDoe",
         messageId: 1
     },
     {
-        text: "Congrats on your new movie role, that's amazing!",
+        text: "Jag vill inte tappa dig som vän. Jag VILL kunna ha ett liv med dig.  :( ",
         receivingUser: "emmaStone",
         sendingUser: "janeSmith",
         messageId: 2
     },
     {
-        text: "Got any basketball tips for me?",
+        text: "John har varit så jävla dryg på senaste, jag står inte ut.",
         receivingUser: "mikeJordan",
         sendingUser: "alexJohnson",
         messageId: 3
     },
     {
-        text: "Thanks for the suggestion on that game!",
+        text: "Har du någonsin gått igenom ett jobbigt relationsbrott?",
         receivingUser: "johnDoe",
         sendingUser: "janeSmith",
         messageId: 4
     },
     {
-        text: "Had a great time discussing acting techniques.",
+        text: "jag kan inte stå ut med att känna så här hela tiden, inte när jag gillar dig så mycket",
         receivingUser: "emmaStone",
         sendingUser: "alexJohnson",
         messageId: 5
     },
     {
-        text: "Wanna grab coffee sometime soon?",
+        text: "Ja, ofta. Vill du snacka om det över middag?",
         receivingUser: "janeSmith",
         sendingUser: "johnDoe",
         messageId: 6
     },
     {
-        text: "Good luck with your high score attempt!",
+        text: "vill du hänga och snacka skit någon gång, känner mig så less på allt just nu",
         receivingUser: "mikeJordan",
         sendingUser: "emmaStone",
         messageId: 7
     },
     {
-        text: "Let's catch up soon, it's been a while.",
+        text: "Du, har du sett Emma på senaste? Jag träffade John och har inte sett henne sen dess.",
         receivingUser: "alexJohnson",
         sendingUser: "janeSmith",
         messageId: 8
     },
     {
-        text: "Appreciate the support, it's a big role!",
+        text: "Så länge du orkar gilla mig lite, lite mindre kan vi fortsätta vara ihop, men annars krossar du mig under vikten av ditt hjärta",
         receivingUser: "janeSmith",
         sendingUser: "emmaStone",
         messageId: 9
     },
     {
-        text: "How's everything going on your side?",
+        text: "Du måste komma NU, kroppen håller på att RÖRA PÅ SIG",
         receivingUser: "johnDoe",
         sendingUser: "alexJohnson",
         messageId: 10

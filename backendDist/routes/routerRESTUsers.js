@@ -27,17 +27,13 @@ router.post('/login', (req, res) => {
         res.sendStatus(500);
         return;
     }
-    // Klar: middleware för att ta emot body
-    // skicka tillbaka en JWT
     console.log('Body är: ', req.body);
     const userId = validateLogin(req.body.username, req.body.password);
     console.log('user id: ', userId);
     if (!userId) {
-        res.sendStatus(401); // unauthorized
+        res.sendStatus(401);
         return;
     }
-    // Make JWT
-    // res.send('"JWT"')
     const payload = {
         userId,
         username: req.body.username

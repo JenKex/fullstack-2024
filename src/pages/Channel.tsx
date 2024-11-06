@@ -4,8 +4,8 @@ import { ChannelMessageBubble } from "../data/components/ChannelMessageBubble.js
 import { ChannelMessage } from "../data/interfaces"
 
 export const Channel: React.FC = () => {
-    // Att göra: Trimma pathname, gör ett getOneUsersDMs-call och filtrera på bara det som matchar 'sendingUser == loggedInUser || pathname && receivingUser == loggedInUser || pathname. Gör styling och lägg klasser på det som tas emot.
-    // Lägg in en useEffect som get-ar chattmeddelanden baserat på antingen path av useLocation eller passade props.
+    // Just nu trimmar detta pathname och gör ett getChannelMessages-call efter den path som tillhör kanalen. Gör styling och lägg klasser på det som tas emot.
+    // useEffect hämtar chattmeddelanden baserat på det.
 
     const [channelMessageList, setChannelMessageList] = useState<ChannelMessage[]>([])
     const [newText, setNewText] = useState<string>('')
@@ -25,7 +25,7 @@ export const Channel: React.FC = () => {
 
     async function postMessage(text: string){
       console.log('Test.')
-      const user: string = localStorage.getItem('username') || 'Guest'
+      const user: string = localStorage.getItem('username') || 'Gäst'
       const channel: string = path[0]
       const newMessage = { text, user, channel }
       console.log(newMessage)

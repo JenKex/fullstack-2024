@@ -47,14 +47,19 @@ const LoginPage: React.FC = () => {
   return (
     <div className="display">
       <header>
-        <div>Channels</div>
-        <div>Users</div>
-        <button onClick={() => navigate('/')}>Home</button>
+        {/* <div>Channels</div>
+        <div>Users</div> */}
+        <button onClick={() => navigate('/')}>Hem.</button>
       </header>
-      <main>
-        <div>Type your username and password below.
-          <input type="text" id="username-input" value={username} onChange={(e) => setUsername(e.target.value)}></input>
+      <main className="login-main">
+        <div className="login-window">
+          <p>Skriv ditt användarnamn och lösenord.</p>
+          <label> Användarnamn:
+            <input type="text" id="username-input" value={username} onChange={(e) => setUsername(e.target.value)}></input>
+          </label>
+          <label> Lösenord:
           <input type="password" id="password-input" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+          </label>
           <button onClick={() => loginUser(username, password)}>Log in</button>
           {/* <button onClick={() => loginUserTest(username)}></button> */}
         </div>

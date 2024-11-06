@@ -14,7 +14,7 @@ export interface ChannelMessage{
     // Tycker det är OK att basera kanal på sträng snarare än ID -- kan sätta in en unika-namn klausul på kanalnamn, och det blir mer komplicerat när man kollar mot kanal-id vs. objectId.
     channel: string,
     user: string,
-    timestamp?: Date
+    // timestamp?: Date
     messageId: number
 }
 
@@ -24,8 +24,7 @@ export interface DirectMessage{
     sendingUser: string,
     // Antagligen enklare att sortera på timestamp än att sortera på messageId. Genereras automatiskt.
     // Unikhetsproblem dock. Kör kanske med båda.
-    // messageId: number
-    timestamp?: Date
+    // timestamp?: Date
     messageId: number
 }
 
@@ -33,7 +32,7 @@ export interface DirectMessageWithoutId{
     text: string,
     receivingUser: string,
     sendingUser: string,
-    timestamp?: Date
+    // timestamp?: Date
 }
 
 export interface User{

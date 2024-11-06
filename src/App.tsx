@@ -6,8 +6,6 @@ import { Channel } from './pages/Channel.js'
 import './App.css'
 
 function App() {
-  // hämta username från zustand store
-  // om ej username: skicka request till backend
 
   return (
     <BrowserRouter>

@@ -12,8 +12,8 @@ function App() {
     <Routes>
         <Route path="/" element={<Home />} />
         <Route path="login" element={<LoginPage/>}/>
-        <Route path="chatroom/*" element={<Chatroom/>}/>
-        <Route path="channel/*" element={<Channel/>}/>
+        <Route path="chatroom/:path" element={<Chatroom/>}/>
+        <Route path="channel/:path" element={<Channel/>}/>
     </Routes>
   </BrowserRouter>
   )

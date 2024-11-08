@@ -12,7 +12,9 @@ const Home: React.FC = () => {
   let [chatroomState, setChatroomState] = useState<string[]>([])
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
   const [currentUser, setCurrentUser] =  useState<string>('')
-
+  
+  // Hade i ett kort tag satt en isLoading-funktion som displayade en rubrik med 'Hämtar data från servern...' medan data laddades. När jag testade detta var datahämtningen i regel tillräckligt snabb att texten för det mesta 'blinkade' in och ut och blev mer visuellt distraherande än hjälpsamt.
+  // const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // Tanke bakom den här funktionen:
   // 1: En tom lista skapas.
@@ -21,10 +23,6 @@ const Home: React.FC = () => {
   // 4: Gå igenom listan och kolla om användaren skickar eller får meddelandet.
   // 5: Om användaren får meddelandet, lägg till den som skickar; om användaren skickar meddelandet, lägg till den som får.
   // 6: Inkludera ej dubletter.
-  // PROBLEM: Behöver skriva om så att JWT-Verify körs på token, men vill inte ha en dedikerad get/protected utan hämta ifrån get/:id -- detta betyder dock att verify behöver köras ifrån frontend för att parsea ut användaren från JWT-token.
-  // PROBLEM: Server-hämtning funkar inte -- kör ifrån hårdkodad data för att testa funktionen.
-
-  // PROBLEM: Kan förhindra dubbelrendering med useRef, en bool, variabel eller liknande för att se till att funktionen inte försöker ladda två gånger och hämta data som får den att parsea fel data, men försöker göra best practices och initialisera klient+hämta samlingar istället. Skriver om detta 2024-11-01, och implementerar då också JWT-verifiering. 
 
   async function renderChannels(): Promise<void>{
     let channels: Channel[] = []
@@ -108,29 +106,31 @@ const Home: React.FC = () => {
 
         {isLoggedIn ?
         <div>
-        <h2>Welcome, {currentUser}</h2>
-          <button onClick={() => logOut()}>Log out</button>
+        <h2>Välkommen, {currentUser}</h2>
+          <button onClick={() => logOut()}>Logga ut</button>
           </div> :
           <div>
-          <h2>Welcome, guest</h2>
-          <button onClick={() => navigate('/login')}>Log in</button>
+          <h2>Välkommen, gäst</h2>
+          <button onClick={() => navigate('/login')}>Logga in</button>
           </div>
         }
       </header>
       <main>
         <nav>
-          <ul> <b>Channels</b>
+          <ul> <b>Kanaler</b>
             {channelState.map((channel) => (
               <ChannelListItem key={channel.name} {...channel}></ChannelListItem>
             ))}
           </ul>
-          <ul> {isLoggedIn ? <b>Users</b> : <b>No DMs detected. Log in to chat!</b>}
+          <ul> {isLoggedIn ? <b>DM</b> : <b>Du har inga meddelanden. Logga in för att chatta!</b>}
             {chatroomState.map((username) => (
               <li onClick={() => navigate(`/chatroom/${username}`)} key={username}>{username}</li>
             ))}
           </ul>
         </nav>
-        <div className="front-page-blurb">Välkommen till SolarStorm! Träffa dina polare, snacka i allmänhet, och njut av erat goda häng! 😊
+        <div className="front-page-blurb">
+          <h3>Välkommen till SolarStorm!</h3>
+          <p>Träffa dina polare, snacka i allmänhet, och njut av erat goda häng! 😊</p>
         </div>
       </main>
     </div>

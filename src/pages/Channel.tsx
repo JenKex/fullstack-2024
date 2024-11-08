@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { ChannelMessageBubble } from "../data/components/ChannelMessageBubble.js"
 import { ChannelMessage } from "../data/interfaces"
 
@@ -10,11 +10,15 @@ export const Channel: React.FC = () => {
     const [channelMessageList, setChannelMessageList] = useState<ChannelMessage[]>([])
     const [newText, setNewText] = useState<string>('')
 
-    const {pathname} = useLocation()
-    const path = pathname
-    .slice(1)
-    .split("/") 
-    .slice(1);
+    // Använde ursprungligen useLocation() för att hämta de olika namnen på kanaler/chattanvändare. Detta ledde till problem med Å, Ä och Ö -- servern hämtas från addressen, försöker skicka 'Allm%3%4Ant' som request till servern, och eftersom kanalen 'Allm%3%4Ant' inte existerar misslyckas den med att hitta kanalen. useParams() kräver inte mycket kodomskrivning, klaffar med useNavigate och route-uppsättningen, och tolkar ut hela strängen. 
+
+    // const {pathname} = useLocation()
+    // const path = pathname
+    // .slice(1)
+    // .split("/") 
+    // .slice(1);
+
+    const {path} = useParams<{path: string}>()
 
     async function getChannelMessages(){
       const response: Response | null = await fetch(`/api/channel-messages/${path}`)
@@ -26,7 +30,7 @@ export const Channel: React.FC = () => {
     async function postMessage(text: string){
       console.log('Test.')
       const user: string = localStorage.getItem('username') || 'Gäst'
-      const channel: string = path[0]
+      const channel: string | undefined = path
       const newMessage = { text, user, channel }
       console.log(newMessage)
       await fetch('/api/channel-messages', {
@@ -37,6 +41,7 @@ export const Channel: React.FC = () => {
         body: JSON.stringify(newMessage)
       })
       await getChannelMessages()
+      setNewText('')
     }
 
     useEffect(() => {
@@ -49,7 +54,7 @@ export const Channel: React.FC = () => {
     <header>
       {/* <div>Channels</div>
       <div>Users</div> */}
-      <button onClick={() => navigate('/')}>Home</button>
+      <button onClick={() => navigate('/')}>Hem</button>
     </header>
     <main className="channel-main">
       <div className="channel">
@@ -58,7 +63,7 @@ export const Channel: React.FC = () => {
           <ChannelMessageBubble key={channelMessage.messageId} {...channelMessage}></ChannelMessageBubble> 
         ))}
         <input type="text" onChange={(e) => setNewText(e.target.value)} value={newText} className="channel-input"></input>
-        <button onClick={() => postMessage(newText)}>Post</button>
+        <button onClick={() => postMessage(newText)}>Skicka kommentar</button>
       </div>
     </main>
   </div>

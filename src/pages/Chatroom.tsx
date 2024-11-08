@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+// import { useLocation } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { DirectMessageBubble } from "../data/components/DirectMessageBubble"
 import { DirectMessage } from "../data/interfaces"
 
@@ -11,11 +12,13 @@ export const Chatroom: React.FC = () => {
     const [newText, setNewText] = useState<string>('')
     
     const LS_KEY = 'JWT_TOKEN'
-    const {pathname} = useLocation()
-    const path = pathname
-    .slice(1)
-    .split("/") 
-    .slice(1);
+    // const {pathname} = useLocation()
+    // const path = pathname
+    // .slice(1)
+    // .split("/") 
+    // .slice(1);
+
+    const {path} = useParams<{path: string}>()
 
     async function getDirectMessages(){
       const loggedInUser = localStorage.getItem('username')
@@ -48,17 +51,19 @@ export const Chatroom: React.FC = () => {
     async function postMessage(text: string){
       console.log('Test.')
       const sendingUser: string = localStorage.getItem('username') || ''
-      const receivingUser: string = path[0]
-      const newMessage = { text, sendingUser, receivingUser }
-      console.log(newMessage)
-      await fetch('/api/direct-messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newMessage)
-      })
-      await getDirectMessages()
+        const receivingUser: string | undefined = path
+        const newMessage = { text, sendingUser, receivingUser }
+        console.log(newMessage)
+        await fetch('/api/direct-messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newMessage)
+        })
+        await getDirectMessages()
+        setNewText('')
+
     }
 
     useEffect(() => {
@@ -69,7 +74,7 @@ export const Chatroom: React.FC = () => {
 
     return <div className="display">
     <header>
-      <button onClick={() => navigate('/')}>Home</button>
+      <button onClick={() => navigate('/')}>Hem</button>
     </header>
     <main className="chatroom-main">
       <div className="chatroom">
@@ -77,7 +82,7 @@ export const Chatroom: React.FC = () => {
           <DirectMessageBubble key={directMessage.messageId} {...directMessage}></DirectMessageBubble> 
         ))}
         <input type="text" value={newText} onChange={(e) => setNewText(e.target.value)} className="text-input"></input>
-        <button onClick={() => postMessage(newText)}>Post</button>
+        <button onClick={() => postMessage(newText)}>Skicka meddelande</button>
       </div>
     </main>
   </div>

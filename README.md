@@ -6,7 +6,7 @@ När ni startar sidan kommer getAllMessages och getAllChannels köras, en funkti
 
 ```js
 const response = await fetch("/direct-messages",
-    {method: EXAMPLE,}
+    {method: EXAMPLE}
 )
 ```
 
@@ -15,29 +15,42 @@ const response = await fetch("/direct-messages",
 ## Objektstruktur
 
 De olika strukturerna för objekt i databasen ser ut så här:
+
 ```js
-Cart: {
-amount: number
+Channel: {
+    name: string,
+    id?: number,
+    isLocked: boolean
 }
 ```
 
 ```js
-Flower: {
-name: string,
-price: number,
-image: string,
-amountInStock: number
+ChannelMessage: {
+    text: string,
+    channel: number,
+    user: string,
+    messageId: number
+}
+```
+
+```js
+DirectMessage: {
+    text: string,
+    receivingUser: string,
+    sendingUser: string,
+    messageId: number
 }
 ```
 
 ```js
 User: {
-name: string,
-isAdmin: boolean
+    username: string,
+    password: string,
+    userId: number
 }
 ```
 
-Observera att om ni hämtar databasens collection i en console.log kommer ni se flera fält, bland annat _id, userId och productId. Dessa representeras av ObjectId, och läggs till automatiskt i databasen när ni skickar med en body -- inkludera ej _id, userId och productId i bodyn ni skapar för att skicka in.
+Inkludera ej _id eller messageId i bodyn ni skapar för att skicka in -- detta läggs till automatiskt av programmet.
 
 REST-apierna att fetcha ifrån heter:
 ```
@@ -49,80 +62,96 @@ REST-apierna att fetcha ifrån heter:
 
 ---
 
-## GET /flowers
-Hämta alla blom-objekt.
+## GET /channels
+Hämta alla kanaler.
 
 ```js
-const response = await fetch('/flowers')
-const flowers: Flower[] = await response.json()
+const response = await fetch('/channels')
+const channels: Channel[] = await response.json()
 ```
 
-## GET /flowers/:id
-
-Hämta ett specifikt blom-objekt.
+## GET /channel-messages
+Hämta alla meddelanden från alla kanaler.
 
 ```js
-const response = await fetch('/flowers/:id')
-
-//Exempel på specifik blomhämtning:
-const response = await fetch('/flowers/66fd2a9d040e7f50dcb738e4').
-
-//Förväntat resultat:
-{
-    _id: 66fd2a9d040e7f50dcb738e4,
-    name: "Lily",
-    price: 14.25,
-    image: "https://februarybloom.com/cdn/shop/products/IMG_3448_530x.jpg?v=1662614773",
-    amountInStock: 25
-}
+const response = await fetch('/channel-messages')
+const channelMessages: ChannelMessage[] = await response.json()
 ```
 
-## POST /flowers
-Lägg till ett nytt blom-objekt. Requestet måste inkludera med request body, och måste inkludera alla objektets fält ifyllda enligt objektstrukturen ovan.
+## GET /channel-messages/:id
+Hämta alla meddelanden associerad med en specifik kanal. Denna fetch kör en funktion som använder den nuvarande kanalen som en parameter.
 
 ```js
-//Exempel på ett POST-request:
-
-const response = await fetch("/flowers",
-    {method: "POST",}
-    {body: {
-        name: "Dandelion",
-        price: 7.49,
-        image: "example.com/dandelion.jpg"
-        amountInStock: 1
-     }}
-)
-
+const {path} = useParams<{path: string}>()
+async function getChannelMessages(){
+    const response: Response | null = await fetch(`/api/channel-messages/${path}`)
+    }
 ```
 
-## PUT /flowers/:id
-
-Uppdaterar egenskaperna för ett specifikt blom-objekt. Body måste inkludera minst en egenskap som ska ändras.
+## POST /channel-messages
+Posta ett nytt meddelande. Enbart texten måste skapas i frontend, och skapas när man skriver den i textfältet; information om användaren som postar det och vilken kanal det postas i skapas båda baserat på den nuvarande addressen och inloggade användaren.
 
 ```js
-//Exempel på ett PUT-request:
-
-const response = await fetch("/flowers/:id",
-    {method: "PUT",}
-    {body: {
-        name: "Lily of the Valley"
-     }}
-)
+    const user: string = localStorage.getItem('username') || 'Gäst'
+    const channel: string | undefined = path
+    const newMessage = { text, user, channel }
+    console.log(newMessage)
+    await fetch('/api/channel-messages', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newMessage)
+    })
 
 ```
 
-## DELETE /flowers/:id
-
-Raderar ett specifikt blom-objekt från databasen. Body behöver inte inkluderas.
+## GET /direct-messages
+Hämta alla direktmeddelanden postade mellan användare.
 
 ```js
-//Exempel på ett DELETE-request:
+const response = await fetch('/direct-messages')
+const channelMessages: ChannelMessage[] = await response.json()
+```
 
-const response = await fetch("/flowers/:id",
-    {method: "DELETE",}
-)
+## GET /direct-messages/:id
+Hämta alla meddelanden associerad med en specifik användare. Denna fetch kör en funktion som kollar om ett visst användarnamn dyker upp antingen som receivingUser eller sendingUser bland alla meddelanden.
+
+```js
+const username = localStorage.getItem('username')
+const response = await fetch(`/api/direct-messages/${loggedInUser}`)
+const channels: Channel[] = await response.json()
+```
+
+## POST /direct-messages
+Posta ett nytt meddelande. Enbart texten måste skapas i frontend, och skapas när man skriver den i textfältet; information om användaren som postar det och vilken användare det postas till skapas båda automatiskt baserat på den nuvarande addressen och inloggade användaren.
+
+```js
+
+    const {path} = useParams<{path: string}>()
+    const sendingUser: string = localStorage.getItem('username') || ''
+    const receivingUser: string | undefined = path
+    const newMessage = { text, sendingUser, receivingUser }
+    console.log(newMessage)
+    await fetch('/api/direct-messages', {
+        method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newMessage)
+    })
 
 ```
 
+## GET /users
+
+Hämta information om alla användare.
+
+```js
+const response = await fetch('/users')
+const channelMessages: ChannelMessage[] = await response.json()
+```
  
 ---
+
+Lycka till, och njut av din flärdiga socialiseringsupplevelse! 💗
